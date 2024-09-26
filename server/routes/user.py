@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Blueprint, jsonify, request
 from server.src.database import Database
 
-user_bp = Blueprint('user_bp', __name__, url_prefix='/usuarios')
+user_bp = Blueprint('user_bp', __name__, url_prefix='/users')
 
 # Contador de usuarios
 id_counter = len(Database.users) + 1

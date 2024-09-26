@@ -12,3 +12,4 @@ class Database:
         {'id': 10, 'nombre': 'Lucía', 'apellido': 'Ramírez', 'password': 'lucia321', 'email': 'lucia.ramirez@example.com', 'username': 'luciaramirez', 'fechaCreacion': '2023-09-20', 'validacionMail': 0}
     ]
 
+ 
