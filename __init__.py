@@ -1,9 +1,6 @@
 from flask import Flask
 from server.config import Config
-from server.routes import user_bp
-from server.routes import trip_join_bp
-from server.routes import trip_bp
-
+from server.routes import *
 
 def create_app():
     
@@ -11,7 +8,6 @@ def create_app():
     app = Flask(__name__)
     # Carga de configuración
     app.config.from_object(Config)
-
     # Registro de Blueprints
     app.register_blueprint(user_bp)
     app.register_blueprint(trip_join_bp)
