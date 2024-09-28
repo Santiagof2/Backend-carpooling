@@ -3,4 +3,6 @@
 
 [dscarpooling-back.alwaysdata.net](dscarpooling-back.alwaysdata.net)
 
-Coleccion de Postman en docs/
+#Run flask backend
+pip install flask
+py ._init_.py
