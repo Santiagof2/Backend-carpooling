@@ -1,4 +1,5 @@
-from server.models import User, Address, City, Province, Driver, Vehicle, VehicleDriver
+from server.models import User, Address, City, Province, Driver, Vehicle, VehicleDriver,Passenger
+from server.models import Trip
 
 class Database:
     users: list[User] = [
@@ -14,13 +15,20 @@ class Database:
     ]
 
     vehicles = [
-        Vehicle(1, 'AB 123 CD', 'Nissan', 'Kicks')
+        Vehicle(1, 'AB 123 CD', 'Nissan', 'Kicks', 'red')
     ]
 
     drivers: list[Driver] = [
-        Driver(9, "Diego", "Torres", "diego321", "diego.torres@example.com", "diegotorres", "2023-09-01", True)
+        Driver(9, "Diego", "Torres", "diego321", "diego.torres@example.com", "diegotorres", "2023-09-01", True),
+        Driver(2, "Esteban", "Martínez", "esteban123", "esteban.martinez@example.com", "estebanmartinez", "2023-08-15", True)
     ]
     
+    passengers: list[Passenger] = [
+        Passenger(1, "Juana", "González", "juana123", "juana.gonzalez@example.com", "juanagonzalez", "2023-07-15", True),
+        Passenger(2, "Martina", "Ramírez", "martina123", "martina.ramirez@example.com", "martinaramirez", "2023-08-20", False)
+    ]
+    
+
 
     province: list[Province] = [
         Province(1, 'Buenos Aires')
@@ -40,7 +48,32 @@ class Database:
         VehicleDriver(1, drivers[0], vehicles[0])
     ]
 
-    trips = []
+    trips = [
+    Trip(
+        1, "active", "2024-10-05", "14:30", 3, 20.5, 1693558705,
+        addresses[0],  # Address en Buenos Aires
+        addresses[1],  # Address en La Plata
+        vehicle_drivers[0]
+    ),
+    Trip(
+        2, "active", "2024-10-08", "09:00", 2, 15.0, 1693598305,
+        addresses[1],  # Otra Address en Buenos Aires
+        addresses[2],  # Otra Address en La Plata
+        vehicle_drivers[0]
+    ),
+    Trip(
+        3, "active", "2024-09-29", "16:00", 0, 10.0, 1693608705,
+        addresses[2],  # Address en La Plata
+        addresses[0],  # Address en La Plata
+        vehicle_drivers[0]
+    ),  # Este no debe aparecer (0 asientos)
+    Trip(
+        4, "active", "2024-10-02", "12:00", 1, 12.5, 1693702105,
+        addresses[0],  # Address en Buenos Aires
+        addresses[1],  # Address en La Plata
+        vehicle_drivers[0]
+    )
+    ]
 
     @classmethod
     def get_address(cls, id: int) -> Address:

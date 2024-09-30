@@ -11,7 +11,7 @@ class VehicleDriver:
         return {
             'id': self._id,
             'driver': self._driver,
-            'vehicle': self._vehicle
+            'vehicle': self._vehicle.to_dict()
         }
 
     def get_id(self):

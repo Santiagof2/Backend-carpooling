@@ -1,6 +1,7 @@
 from flask import Flask
 from server.config import Config
-from server.routes import user_bp
+from server.routes import user_bp, role_selection, trip_a 
+
 
 
 def create_app():
@@ -12,6 +13,9 @@ def create_app():
 
     # Registro de Blueprints
     app.register_blueprint(user_bp)
+    app.register_blueprint(role_selection)
+    app.register_blueprint(trip_a)
+  
 
     return app
 

@@ -17,12 +17,13 @@ class Trip:
     def to_dict(self):
         return {
             'id': self._id,
+            'status': self._status,
             'departure_date': self._departure_date,
             'departure_time': self._departure_time,
             'available_seats': self._available_seats,
             'seat_price': self._seat_price,
             'creation_timestamp': self._creation_timestamp,
-            'deaparture_address': self._deaparture_address,
-            'arrival_address': self._arrival_address,
-            'vehicle_driver': self._vehicle_driver
+            'departure_address': self._deaparture_address.to_dict(),
+            'arrival_address': self._arrival_address.to_dict(),
+            'vehicle_driver': self._vehicle_driver.to_dict()
         }
