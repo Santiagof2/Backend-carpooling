@@ -1,7 +1,3 @@
-from server.models.vehicle import Vehicle
-from server.models.user import Driver
-
-
 class VehicleDriver:
     def __init__(self, vehicle_driver_id, driver, vehicle):
         self.id = vehicle_driver_id
