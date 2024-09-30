@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
-from server.models import User, Driver, Passenger
+from server.models import User, Driver, Passager
 from server.src.database import Database
+from .trip import get_driver_por_id , get_user_por_id 
 
 role_selection = Blueprint('role_selection', __name__ , url_prefix='/role')
 
@@ -13,18 +14,18 @@ def select_role():
     if role not in ['passenger', 'driver']:
         return jsonify({'error': 'Seleccionado de rol invalido'}), 400
 
-    user = next((user for user in Database.users if user._id == user_id), None)
+    user = get_user_por_id(user_id)
     if not user:
         return jsonify({'error': 'Usuario no encontrado'}), 404
 
     if role == 'passenger':
-        passenger = next((passenger for passenger in Database.passengers if passenger._id == user_id), None)
+        passenger = next((passenger for passenger in Database.passagers if passenger.id == user_id), None) #Database.passagers 
         if not passenger:
             return jsonify({'error': 'Perfil del pasajero no encontrado'}), 404
-        return jsonify({'message': ' Estas en modo pasajero', 'data': passenger.to_dict()}), 200
+        return jsonify({'message': ' Estas en modo pasajero', 'data': user.__dict__}), 200
 
     if role == 'driver':
-        driver = next((driver for driver in Database.drivers if driver._id == user_id), None)
+        driver = get_driver_por_id(user_id)
         if not driver:
             return jsonify({'error': 'Perfil del conductor no encontrado'}), 404
-        return jsonify({'message': 'Estas en modo conductor', 'data': driver.to_dict()}), 200
+        return jsonify({'message': 'Estas en modo conductor', 'data': user.__dict__}), 200

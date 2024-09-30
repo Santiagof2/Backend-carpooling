@@ -13,7 +13,7 @@ def get_trips_available():
     # Filtrar viajes con asientos disponibles y fecha de salida futura
     available_trips = [
         trip for trip in Database.trips
-        if trip._available_seats > 0 and trip._departure_date >= current_date
+        if trip.available_seats > 0 and trip.departure_date >= current_date
     ]
 
-    return jsonify({'viajes': [trip.to_dict() for trip in available_trips]})
+    return jsonify({'viajes dispobiles': [trip.__dict__ for trip in available_trips]})
