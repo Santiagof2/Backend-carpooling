@@ -14,6 +14,7 @@ def create_app():
 
     app.register_blueprint(trip_join_bp)
     app.register_blueprint(trip_bp)
+    
     app.register_blueprint(role_selection)
     app.register_blueprint(trip_a)
     
