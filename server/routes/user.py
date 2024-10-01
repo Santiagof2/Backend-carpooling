@@ -41,22 +41,22 @@ def crear_usuario():
     data = request.get_json()
 
     # Obtenemos los datos
-    nombre = data.get('nombre')
-    apellido = data.get('apellido')
+    name = data.get('name')
+    lastname = data.get('lastname')
     email = data.get('email')
     password = data.get('password')
     username = data.get('username')
     validacionMail = data.get('validacionMail')
 
     # Validación
-    if not nombre or not apellido or not email or not password or not username or validacionMail is None:
+    if not name or not lastname or not email or not password or not username or validacionMail is None:
         return jsonify({'error': 'Faltan datos'}), 400
 
     # Creción del usuario
-    nuevo_usuario = {
+    newUser = {
         'id': id_counter,
-        'nombre': nombre,
-        'apellido': apellido,
+        'name': name,
+        'lastname': lastname,
         'password': password,
         'email': email,
         'username': username,
@@ -64,9 +64,9 @@ def crear_usuario():
         'validacionMail': validacionMail
     }
     id_counter += 1
-    Database.users.append(nuevo_usuario)
+    Database.users.append(newUser)
     
-    return jsonify(nuevo_usuario), 201
+    return jsonify(newUser), 201
 
 # Actualizar un usuario existente
 @user_bp.route('/<int:id>', methods=['PUT'])
@@ -77,8 +77,8 @@ def actualizar_usuario(id):
         return jsonify({'error': 'Usuario no encontrado'}), 404
     
     data = request.get_json()
-    usuario['nombre'] = data.get('nombre', usuario['nombre'])
-    usuario['apellido'] = data.get('apellido', usuario['apellido'])
+    usuario['name'] = data.get('name', usuario['name'])
+    usuario['lastname'] = data.get('lastname', usuario['lastname'])
     usuario['email'] = data.get('email', usuario['email'])
     usuario['username'] = data.get('username', usuario['username'])
     usuario['password'] = data.get('password', usuario['password'])
