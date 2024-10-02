@@ -25,6 +25,6 @@ def descontar_cupo(id_trip: int):
 
 def get_passenger(id):
     for passenger in Database.Passengers:
-        if passenger.id == id:
+        if passenger._id == id:
             return passenger
     return jsonify({'error': 'Pasajero no encontrado'}), 404

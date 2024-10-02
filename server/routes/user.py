@@ -5,8 +5,7 @@ from server.models import User
 
 user_bp = Blueprint('user_bp', __name__, url_prefix='/users')
 
-# Contador de usuarios
-id_counter = len(Database.users) + 1
+
 
 def buscar_usuario_por_id(id, usuarios: list[User]) -> User | None:
     """
@@ -54,20 +53,19 @@ def crear_usuario():
         return jsonify({'error': 'Faltan datos'}), 400
 
     # Creción del usuario
-    nuevo_usuario = {
-        'id': id_counter,
-        'nombre': nombre,
-        'apellido': apellido,
-        'password': password,
-        'email': email,
-        'username': username,
-        'fechaCreacion': datetime.now().strftime('%Y-%m-%d'),
-        'validacionMail': validacionMail
-    }
-    id_counter += 1
-    Database.users.append(nuevo_usuario)
+    user = User(
+        len(Database.users) + 1,
+        nombre,
+        apellido,
+        password,
+        email,
+        username,
+        datetime.now().strftime('%Y-%m-%d'),
+        validacionMail
+    )
+    Database.users.append(user)
     
-    return jsonify({'mensaje': 'Usuario creado correctamente.'}), 201
+    return jsonify({'mensaje': 'Usuario creado correctamente.', 'user_id': user._id}), 201
 
 # Actualizar un usuario existente
 @user_bp.route('/<int:id>', methods=['PUT'])
