@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "15e9a8ad-243b-4515-9b80-84d5694f52d9",
+		"_postman_id": "805110f2-ed15-4a1b-9312-663b0af4b9e8",
 		"name": "Carpooling DS",
 		"description": "Colección para consumir la API de Carpooling DS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "26225413"
+		"_exporter_id": "37507896"
 	},
 	"item": [
 		{
@@ -16,12 +16,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuarios",
+							"raw": "{{base_url}}/users",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios"
+								"users"
 							]
 						}
 					},
@@ -33,12 +33,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuarios/:id",
+							"raw": "{{base_url}}/users/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios",
+								"users",
 								":id"
 							],
 							"variable": [
@@ -66,12 +66,12 @@
 							"raw": "{\n    \"nombre\": \"Manuel\",\n    \"apellido\": \"González\",\n    \"password\": \"manuel123\",\n    \"email\": \"manuel.gonzalez@example.com\",\n    \"username\": \"manuelgonzalez\",\n    \"validacionMail\": 1\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/usuarios",
+							"raw": "{{base_url}}/users",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios"
+								"users"
 							]
 						}
 					},
@@ -92,12 +92,12 @@
 							"raw": "{\n    \"nombre\": \"Manuel Actualizado\",\n    \"apellido\": \"González\",\n    \"email\": \"manuel.gonzalez@example.com\",\n    \"username\": \"manuelgonzalez\",\n    \"validacionMail\": 1\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/usuarios/:id",
+							"raw": "{{base_url}}/users/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios",
+								"users",
 								":id"
 							],
 							"variable": [
@@ -116,12 +116,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuarios/:id",
+							"raw": "{{base_url}}/users/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios",
+								"users",
 								":id"
 							],
 							"variable": [
@@ -129,6 +129,76 @@
 									"key": "id",
 									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Viajes",
+			"item": [
+				{
+					"name": "Obtener viaje detalle por id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/trip/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"trip",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "unirse a viaje",
+			"item": [
+				{
+					"name": "Crear join a viaje",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_trip\":1,\r\n    \"passenger_id\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/trip_join",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"trip_join"
 							]
 						}
 					},
