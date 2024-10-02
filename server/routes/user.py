@@ -17,7 +17,7 @@ def buscar_usuario_por_id(id, usuarios):
     """
     for user in usuarios:
         if user._id == id:
-            return user.to_dict()
+            return user.__dict__
     return None
 
 # Obtener todos los usuarios
