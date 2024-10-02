@@ -9,6 +9,18 @@ class User:
         self._creation_date = creation_date
         self._email_validation = email_validation
 
+    def to_dict(self):
+        return {
+            'id': self._id,
+            'first_name': self._first_name,
+            'last_name':self._last_name,
+            'password':self._password,
+            'email':self._email,
+            'username':self._username,
+            'creation_date':self._creation_date,
+            'email_validation':self._email_validation
+        }
+
 class Driver(User):
     def __init__(self, id: int, User: User):
         self._id = id
