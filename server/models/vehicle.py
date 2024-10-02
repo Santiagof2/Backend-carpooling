@@ -1,5 +1,5 @@
 class Vehicle:
-    def __init__(self, id: int, license_plate: str, brand: str, model: str, color: str) -> None:
+    def __init__(self, id: int, license_plate: str, brand: str, model: str, color: str, year: int) -> None:
         self._id = id
         self._license_plate = license_plate
         self._brand = brand

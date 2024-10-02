@@ -22,9 +22,11 @@ class User:
         }
 
 class Driver(User):
-    def __init__(self, id: int, first_name: str, last_name: str, password: str, email: str, username: str, creation_date: str, email_validation: bool):
-        super().__init__(id, first_name, last_name, password, email, username, creation_date, email_validation)
+    def __init__(self, id: int, User: User):
+        self.id = id
+        self.user = User
 
 class Passenger(User):
-    def __init__(self, id: int, first_name: str, last_name: str, password: str, email: str, username: str, creation_date: str, email_validation: bool):
-        super().__init__(id, first_name, last_name, password, email, username, creation_date, email_validation)
+    def __init__(self, id: int, User: User):
+        self.id = id
+        self.user = User

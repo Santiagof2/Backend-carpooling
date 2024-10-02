@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask import Blueprint, jsonify, request
 from server.models import Trip
 from server.src.database import Database
@@ -12,28 +11,28 @@ def get_trip_por_id(id, trips):
     return jsonify({'error': 'Viaje no encontrado'}), 404
 
 #esta funcion no corresponde a esta BP.
-def get_address_por_id(id, addresses):
+def get_address(trip_address, addresses: list):
     for address in addresses:
-        if address.id == id:
+        if address == trip_address:
             return address
     return jsonify({'error': 'Direccion no encontrada'}), 404
 
-def get_driver_by_vehicle_id(vehicle_driver_id):
+def get_driver_by_vehicle(vehicle_driver_id):
     for vehicle_driver in Database.vehicle_drivers:
-        if vehicle_driver.id == vehicle_driver_id:
-            driver = get_driver_por_id(vehicle_driver.driver)
+        if vehicle_driver == vehicle_driver_id:
+            driver = get_driver_from_vehicle(vehicle_driver._driver)
             return driver
     return jsonify({'error': 'Conductor no encontrado'}), 404
 
-def get_driver_por_id(id):
+def get_driver_from_vehicle(_driver):
     for driver in Database.drivers:
-        if driver.id == id:
-            return get_user_por_id(driver.user_id)
+        if driver == _driver:
+            return get_user_by_driver(driver.user)
     return jsonify({'error': 'Conductor no encontrado'}), 404
 
-def get_user_por_id(id):
+def get_user_by_driver(_user):
     for user in Database.users:
-        if user.user_id == id:
+        if user == _user:
             return user
     return jsonify({'error': 'Usuario no encontrado'}), 404
 
@@ -78,14 +77,14 @@ def create_trip():
 @trip_bp.route('/<int:id>', methods=['GET'])
 def get_trip(id):
     trip = get_trip_por_id(id, Database.trips)
-    departure = get_address_por_id(trip.departure_address_id, Database.addresses)
-    arrival = get_address_por_id(trip.arrival_address_id, Database.addresses)
-    driver = get_driver_by_vehicle_id(trip.vehicle_driver_id)
+    departure = get_address(trip._deaparture_address, Database.addresses)
+    arrival = get_address(trip._arrival_address, Database.addresses)
+    driver = get_driver_by_vehicle(trip._vehicle_driver)
     response = {
         'id': trip.id,
-        'departure_date': trip.departure_date,
-        'departure_address': departure.__dict__,
-        'arrival_address': arrival.__dict__,
-        'driver': driver.__dict__,
+        'departure_date': trip._departure_date,
+        'departure_address': departure.to_dict(),
+        'arrival_address': arrival.to_dict(),
+        'driver': driver.to_dict(),
     }
     return response, 200

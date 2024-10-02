@@ -1,5 +1,4 @@
-from server.models import User, Address, City, Province, Driver, Vehicle, VehicleDriver
-
+from server.models import *
 class Database:
     users: list[User] = [
         User(1, "Juan", "Pérez", "password123", "juan.perez@example.com", "juanperez", "2023-01-01", True),
@@ -13,13 +12,16 @@ class Database:
         User(10, "Lucía", "Ramírez", "lucia321", "lucia.ramirez@example.com", "luciaramirez", "2023-09-20", False)
     ]
     vehicles = [
-        Vehicle(1, 'AB 123 CD', 'Nissan', 'Kicks')
+        Vehicle(1, 'AB 123 CD', 'Nissan', 'Kicks', '2020', 'Blanco')
     ]
     drivers: list[Driver] = [
-        Driver(9, "Diego", "Torres", "diego321", "diego.torres@example.com", "diegotorres", "2023-09-01", True)
+        Driver(1, users[5]),
+        Driver(2, users[6]),
+        Driver(3, users[7]),
+        Driver(4, users[8]),
     ]
     vehicle_drivers = [
-        VehicleDriver(1, 2, 1)
+        VehicleDriver(1, drivers[0], vehicles[0])
     ]
     province: list[Province] = [
         Province(1, 'Buenos Aires')
@@ -36,26 +38,27 @@ class Database:
     vehicle_drivers: list[VehicleDriver] = [
         VehicleDriver(1, drivers[0], vehicles[0])
     ]
-    passagers = [
-        Passager(1, 1),
-        Passager(2, 2),
-        Passager(3, 3),
-        Passager(4, 4),
-        Passager(5, 5),
-        Passager(6, 8),
-        Passager(7, 10)
+    Passengers = [
+        Passenger(1, users[0]),
+        Passenger(2, users[1]),
+        Passenger(3, users[2]),
+        Passenger(4, users[3]),
+        Passenger(5, users[4]),
+        Passenger(6, users[7]),
+        Passenger(7, users[8])
     ]
     trips = [
-        Trip(1, "2023-01-01", "08:00", 3, 500.0, 1, "2023-01-02", 2, 1),
+        Trip(1, "2023-01-01", "08:00", 3, 500.0, 1, 25692, addresses[1], addresses[0], vehicle_drivers[0]),
+        Trip(2, "2023-04-06", "19:30", 3, 500.0, 1, 245, addresses[1], addresses[0], vehicle_drivers[0]),
     ]
-    passager_trips = [
-        Passager_trip(1, 1, 1),
-        Passager_trip(2, 1, 2),
-        Passager_trip(3, 2, 3),
-        Passager_trip(4, 2, 4),
-        Passager_trip(5, 3, 5),
-        Passager_trip(6, 3, 6),
-        Passager_trip(7, 3, 7)
+    PassengerTrips = [
+        PassengerTrip(1, Passengers[0], trips[0]),
+        PassengerTrip(2, Passengers[1], trips[0]),
+        PassengerTrip(3, Passengers[2], trips[0]),
+        PassengerTrip(4, Passengers[3], trips[0]),
+        PassengerTrip(5, Passengers[4], trips[0]),
+        PassengerTrip(6, Passengers[5], trips[0]),
+        PassengerTrip(7, Passengers[6], trips[0])
     ]
 
     @classmethod
