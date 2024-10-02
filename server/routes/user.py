@@ -16,8 +16,8 @@ def buscar_usuario_por_id(id, usuarios):
     :return: El usuario encontrado o None si no existe.
     """
     for user in usuarios:
-        if user['id'] == id:
-            return user
+        if user._id == id:
+            return user.to_dict()
     return None
 
 # Obtener todos los usuarios
@@ -97,3 +97,4 @@ def eliminar_usuario(id):
     Database.users.remove(usuario)
     
     return jsonify({'mensaje': 'Usuario eliminado'}), 200
+
