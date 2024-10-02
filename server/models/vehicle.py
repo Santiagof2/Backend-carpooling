@@ -5,6 +5,7 @@ class Vehicle:
         self._brand = brand
         self._model = model
         self._color = color
+        self._year = year
 
     def to_dict(self):
         return {

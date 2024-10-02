@@ -12,20 +12,18 @@ class Database:
         User(8, "Laura", "Díaz", "laura654", "laura.diaz@example.com", "lauradiaz", "2023-08-15", True),
         User(10, "Lucía", "Ramírez", "lucia321", "lucia.ramirez@example.com", "luciaramirez", "2023-09-20", False)
     ]
-
     vehicles = [
         Vehicle(1, 'AB 123 CD', 'Nissan', 'Kicks')
     ]
-
     drivers: list[Driver] = [
         Driver(9, "Diego", "Torres", "diego321", "diego.torres@example.com", "diegotorres", "2023-09-01", True)
     ]
-    
-
+    vehicle_drivers = [
+        VehicleDriver(1, 2, 1)
+    ]
     province: list[Province] = [
         Province(1, 'Buenos Aires')
     ]
-
     cities: list[City] = [
         City(1, 'La Plata', province[0]), 
         City(1, 'Chascomús', province[0])
@@ -35,12 +33,30 @@ class Database:
         Address(1, 'Calle 3', 712, cities[0]),
         Address(1, 'Av. 32', 1123, cities[0])
     ]
-    
     vehicle_drivers: list[VehicleDriver] = [
         VehicleDriver(1, drivers[0], vehicles[0])
     ]
-
-    trips = []
+    passagers = [
+        Passager(1, 1),
+        Passager(2, 2),
+        Passager(3, 3),
+        Passager(4, 4),
+        Passager(5, 5),
+        Passager(6, 8),
+        Passager(7, 10)
+    ]
+    trips = [
+        Trip(1, "2023-01-01", "08:00", 3, 500.0, 1, "2023-01-02", 2, 1),
+    ]
+    passager_trips = [
+        Passager_trip(1, 1, 1),
+        Passager_trip(2, 1, 2),
+        Passager_trip(3, 2, 3),
+        Passager_trip(4, 2, 4),
+        Passager_trip(5, 3, 5),
+        Passager_trip(6, 3, 6),
+        Passager_trip(7, 3, 7)
+    ]
 
     @classmethod
     def get_address(cls, id: int) -> Address:
