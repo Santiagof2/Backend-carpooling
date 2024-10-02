@@ -6,7 +6,7 @@ trip_bp = Blueprint('trip_bp', __name__, url_prefix='/trip')
 
 def get_trip_por_id(id, trips):
     for trip in trips:
-        if trip.id == id:
+        if trip._id == id:
             return trip
     return jsonify({'error': 'Viaje no encontrado'}), 404
 
@@ -81,7 +81,7 @@ def get_trip(id):
     arrival = get_address(trip._arrival_address, Database.addresses)
     driver = get_driver_by_vehicle(trip._vehicle_driver)
     response = {
-        'id': trip.id,
+        'id': trip._id,
         'departure_date': trip._departure_date,
         'departure_address': departure.to_dict(),
         'arrival_address': arrival.to_dict(),

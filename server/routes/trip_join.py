@@ -18,7 +18,7 @@ def join_PassengerTrip():
 
 def descontar_cupo(id_trip: int):
     for trip in Database.trips:
-        if trip.id == id_trip:
+        if trip._id == id_trip:
             trip.available_seats -= 1
             return trip
     return jsonify({'error': 'Viaje no encontrado'}), 404
