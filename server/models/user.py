@@ -23,10 +23,22 @@ class User:
 
 class Driver(User):
     def __init__(self, id: int, User: User):
-        self.id = id
+        self._id = id
         self.user = User
+
+    def to_dict(self):
+        return {
+                'id': self._id,
+                'user': self.user.to_dict()
+            }
 
 class Passenger(User):
     def __init__(self, id: int, User: User):
-        self.id = id
+        self._id = id
         self.user = User
+
+    def to_dict(self):
+        return {
+                'id': self._id,
+                'user': self.user.to_dict()
+            }

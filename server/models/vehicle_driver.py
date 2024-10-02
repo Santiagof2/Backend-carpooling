@@ -10,8 +10,8 @@ class VehicleDriver:
     def to_dict(self):
         return {
             'id': self._id,
-            'driver': self._driver,
-            'vehicle': self._vehicle
+            'driver': self._driver.to_dict(),
+            'vehicle': self._vehicle.to_dict()
         }
 
     def get_id(self):

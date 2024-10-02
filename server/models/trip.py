@@ -22,7 +22,7 @@ class Trip:
             'available_seats': self._available_seats,
             'seat_price': self._seat_price,
             'creation_timestamp': self._creation_timestamp,
-            'deaparture_address': self._deaparture_address,
-            'arrival_address': self._arrival_address,
-            'vehicle_driver': self._vehicle_driver
+            'deaparture_address': self._deaparture_address.to_dict(),
+            'arrival_address': self._arrival_address.to_dict(),
+            'vehicle_driver': self._vehicle_driver.to_dict()
         }

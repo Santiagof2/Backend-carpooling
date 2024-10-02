@@ -40,7 +40,7 @@ def get_user_by_driver(_user):
 @trip_bp.route('/', methods=['GET'])
 def get_trips():
     list_trips = Database.trips
-    return jsonify([trip.__dict__ for trip in list_trips]), 200
+    return jsonify([trip.to_dict() for trip in list_trips]), 200
 
 # cargar un viaje
 @trip_bp.route('/', methods=['POST'])
@@ -81,7 +81,7 @@ def get_trip(id):
     arrival = get_address(trip._arrival_address, Database.addresses)
     driver = get_driver_by_vehicle(trip._vehicle_driver)
     response = {
-        'id': trip._id,
+        'viaje': trip._id,
         'departure_date': trip._departure_date,
         'departure_address': departure.to_dict(),
         'arrival_address': arrival.to_dict(),
