@@ -14,7 +14,7 @@ class User:
             'id': self._id,
             'first_name': self._first_name,
             'last_name':self._last_name,
-            'password':self._password,
+            #'password':self._password,
             'email':self._email,
             'username':self._username,
             'creation_date':self._creation_date,
