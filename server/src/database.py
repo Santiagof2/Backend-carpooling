@@ -48,8 +48,8 @@ class Database:
         Passenger(7, users[8])
     ]
     trips = [
-        Trip(1, "2023-01-01", "08:00", 3, 500.0, 1, 25692, addresses[1], addresses[0], vehicle_drivers[0]),
-        Trip(2, "2023-04-06", "19:30", 3, 500.0, 1, 245, addresses[1], addresses[0], vehicle_drivers[0]),
+        Trip(1, 1, "2023-01-01", "08:00", 3, 500.0, 25692, addresses[1], addresses[0], vehicle_drivers[0]),
+        Trip(2, 1, "2023-04-06", "19:30", 3, 500.0, 245, addresses[1], addresses[0], vehicle_drivers[0]),
     ]
     PassengerTrips = [
         PassengerTrip(1, Passengers[0], trips[0]),
