@@ -81,8 +81,12 @@ def get_trip(id):
     arrival = get_address(trip._arrival_address, Database.addresses)
     driver = get_driver_by_vehicle(trip._vehicle_driver)
     response = {
-        'viaje': trip._id,
+        'id': trip._id,
         'departure_date': trip._departure_date,
+        'departure_time': trip._departure_time,
+        'available_seats': trip._available_seats,
+        'seat_price': trip._seat_price,
+        'creation_timestamp': trip._creation_timestamp,
         'departure_address': departure.to_dict(),
         'arrival_address': arrival.to_dict(),
         'driver': driver.to_dict(),
