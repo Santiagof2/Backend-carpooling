@@ -1,6 +1,6 @@
 from flask import Flask
 from server.config import Config
-from server.routes import user_bp, trip_join_bp, trip_bp, address_bp, auth_bp
+from server.routes import *
 
 def create_app():
     
@@ -15,6 +15,7 @@ def create_app():
     app.register_blueprint(trip_join_bp)
     app.register_blueprint(trip_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(role_selection)
     
     return app
 
