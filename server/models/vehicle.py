@@ -13,5 +13,6 @@ class Vehicle:
             'license_plate': self._license_plate,
             'brand': self._brand,
             'model': self._model,
-            'color': self._color
+            'color': self._color,
+            'year': self._year
         }

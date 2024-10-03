@@ -41,22 +41,22 @@ def crear_usuario():
     data = request.get_json()
 
     # Obtenemos los datos
-    nombre = data.get('nombre')
-    apellido = data.get('apellido')
+    name = data.get('name')
+    lastname = data.get('lastname')
     email = data.get('email')
     password = data.get('password')
     username = data.get('username')
     validacionMail = data.get('validacionMail')
 
     # Validación
-    if not nombre or not apellido or not email or not password or not username or validacionMail is None:
+    if not name or not lastname or not email or not password or not username or validacionMail is None:
         return jsonify({'error': 'Faltan datos'}), 400
 
     # Creción del usuario
     user = User(
         len(Database.users) + 1,
-        nombre,
-        apellido,
+        name,
+        lastname,
         password,
         email,
         username,

@@ -12,7 +12,7 @@ class Database:
         User(10, "Lucía", "Ramírez", "lucia321", "lucia.ramirez@example.com", "luciaramirez", "2023-09-20", False)
     ]
     vehicles = [
-        Vehicle(1, 'AB 123 CD', 'Nissan', 'Kicks', '2020', 'Blanco')
+        Vehicle(1, 'AB 123 CD', 'Nissan', 'Kicks', 'Blanco', '2020')
     ]
     drivers: list[Driver] = [
         Driver(1, users[5]),
