@@ -36,6 +36,19 @@ def get_user_by_driver(_user):
             return user
     return jsonify({'error': 'Usuario no encontrado'}), 404
 
+def get_vehicle_by_driver(vehicle_driver_id):
+    for vehicle_driver in Database.vehicle_drivers:
+        if vehicle_driver == vehicle_driver_id:
+            vehicle = get_vehicle_from_vehicle_driver(vehicle_driver._vehicle)
+            return vehicle
+    return jsonify({'error': 'Vehiculo no encontrado'}), 404
+
+def get_vehicle_from_vehicle_driver(_vehicle):
+    for vehicle in Database.vehicles:
+        if vehicle == _vehicle:
+            return vehicle
+    return jsonify({'error': 'Vehiculo no encontrado'}), 404
+
 # listar todos los viajes
 @trip_bp.route('/', methods=['GET'])
 def get_trips():
@@ -80,6 +93,7 @@ def get_trip(id):
     departure = get_address(trip._deaparture_address, Database.addresses)
     arrival = get_address(trip._arrival_address, Database.addresses)
     driver = get_driver_by_vehicle(trip._vehicle_driver)
+    vehicle = get_vehicle_by_driver(trip._vehicle_driver)
     response = {
         'id': trip._id,
         'departure_date': trip._departure_date,
@@ -90,5 +104,6 @@ def get_trip(id):
         'departure_address': departure.to_dict(),
         'arrival_address': arrival.to_dict(),
         'driver': driver.to_dict(),
+        'vehicle': vehicle.to_dict()
     }
     return response, 200
