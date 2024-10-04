@@ -68,6 +68,7 @@ def get_trips():
 @trip_bp.route('/', methods=['POST'])
 def create_trip():
     data = request.get_json()
+
     # Obtenemos los datos
     id = len(Database.trips) + 1
     status = 'activo'
@@ -77,7 +78,7 @@ def create_trip():
     seat_price = data.get('seat_price')
     creation_timestamp = datetime.now().strftime('%Y-%m-%d')
 
-    split_address = data.get('departure_address').split(', ')
+    split_address = data.get('deaparture_address').split(', ')
     deaparture_address = get_or_add_address(split_address[0], split_address[1], split_address[2], int(split_address[3]))
     split_address = data.get('arrival_address').split(', ')
     arrival_address = get_or_add_address(split_address[0], split_address[1], split_address[2], int(split_address[3]))
@@ -86,7 +87,7 @@ def create_trip():
     if not vehicle_driver: return {'error': 'vehicle_driver_id not found'}, 400
 
     new_trip = Trip(id, status, departure_date, departure_time, available_seats, seat_price, creation_timestamp, deaparture_address, arrival_address, vehicle_driver)
-    pprint(vars(new_trip))
+    
     Database.trips.append(new_trip)
     return {'message': 'Trip created successfully.'}, 200
 
@@ -105,13 +106,13 @@ def update_trip(id):
     arrival_address_id = data.get('arrival_address_id')
     vehicle_driver_id = data.get('vehicle_driver_id')
 
-    deaparture_address = Database.get_address(deaparture_address_id)
+    deaparture_address = get_address(deaparture_address_id)
     if not deaparture_address: return {'error': 'deaparture_address_id not found'}, 400
 
-    arrival_address = Database.get_address(arrival_address_id)
+    arrival_address = get_address(arrival_address_id)
     if not arrival_address: return {'error': 'arrival_address_id not found'}, 400
 
-    vehicle_driver = Database.get_vehicle_driver(vehicle_driver_id)
+    vehicle_driver = get_vehicle_driver_by_id(vehicle_driver_id)
     if not vehicle_driver: return {'error': 'vehicle_driver_id not found'}, 400
 
     new_trip = Trip(id, status, departure_date, departure_time, available_seats, seat_price, creation_timestamp, deaparture_address, arrival_address, vehicle_driver)

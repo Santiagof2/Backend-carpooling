@@ -12,5 +12,5 @@ def get_address():
 @address_bp.route('/', methods=['POST'])
 def create_address():
     data = request.get_json()
-
+    return None
     
