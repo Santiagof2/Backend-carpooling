@@ -60,15 +60,3 @@ class Database:
         PassengerTrip(6, Passengers[5], trips[0]),
         PassengerTrip(7, Passengers[6], trips[0])
     ]
-
-    @classmethod
-    def get_address(cls, id: int) -> Address:
-        for address in cls.addresses:
-            if address.get_id() == id:
-                return address
-    
-    @classmethod
-    def get_vehicle_driver(cls, id: int) -> VehicleDriver:
-        for vehicle_driver in cls.vehicle_drivers:
-            if vehicle_driver.get_id() == id:
-                return vehicle_driver

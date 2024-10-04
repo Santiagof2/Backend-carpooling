@@ -1,5 +1,7 @@
+from datetime import datetime
+from pprint import pprint
 from flask import Blueprint, jsonify, request
-from server.models import Trip
+from server.models import Trip, Address, VehicleDriver, City, Vehicle, Province
 from server.src.database import Database
 
 trip_bp = Blueprint('trip_bp', __name__, url_prefix='/trip')
@@ -8,7 +10,8 @@ def get_trip_por_id(id, trips):
     for trip in trips:
         if trip._id == id:
             return trip
-    return jsonify({'error': 'Viaje no encontrado'}), 404
+    trip = None
+    return trip
 
 #esta funcion no corresponde a esta BP.
 def get_address(trip_address, addresses: list):
@@ -17,9 +20,15 @@ def get_address(trip_address, addresses: list):
             return address
     return jsonify({'error': 'Direccion no encontrada'}), 404
 
-def get_driver_by_vehicle(vehicle_driver_id):
+def get_vehicle_driver_by_id(vehicle_driver_id):
     for vehicle_driver in Database.vehicle_drivers:
-        if vehicle_driver == vehicle_driver_id:
+        if vehicle_driver._id == vehicle_driver_id:
+            vehicle_driver = vehicle_driver
+            return vehicle_driver
+
+def get_driver_by_vehicle(vehicle_driver):
+    for vehicle_driver in Database.vehicle_drivers:
+        if vehicle_driver == vehicle_driver:
             driver = get_driver_from_vehicle(vehicle_driver._driver)
             return driver
     return jsonify({'error': 'Conductor no encontrado'}), 404
@@ -59,9 +68,33 @@ def get_trips():
 @trip_bp.route('/', methods=['POST'])
 def create_trip():
     data = request.get_json()
-
     # Obtenemos los datos
     id = len(Database.trips) + 1
+    status = 'activo'
+    departure_date = data.get('departure_date')
+    departure_time = data.get('departure_time')
+    available_seats = data.get('available_seats')
+    seat_price = data.get('seat_price')
+    creation_timestamp = datetime.now().strftime('%Y-%m-%d')
+
+    split_address = data.get('departure_address').split(', ')
+    deaparture_address = get_or_add_address(split_address[0], split_address[1], split_address[2], int(split_address[3]))
+    split_address = data.get('arrival_address').split(', ')
+    arrival_address = get_or_add_address(split_address[0], split_address[1], split_address[2], int(split_address[3]))
+
+    vehicle_driver = get_vehicle_driver_by_id(data.get('vehicle_driver_id'))
+    if not vehicle_driver: return {'error': 'vehicle_driver_id not found'}, 400
+
+    new_trip = Trip(id, status, departure_date, departure_time, available_seats, seat_price, creation_timestamp, deaparture_address, arrival_address, vehicle_driver)
+    pprint(vars(new_trip))
+    Database.trips.append(new_trip)
+    return {'message': 'Trip created successfully.'}, 200
+
+#Actualizar un viaje
+@trip_bp.route('/<int:id>', methods=['PUT'])
+def update_trip(id):
+    data = request.get_json()
+    if not data: return {'error': 'No data provided'}, 400
     status = data.get('status')
     departure_date = data.get('departure_date')
     departure_time = data.get('departure_time')
@@ -86,24 +119,33 @@ def create_trip():
     Database.trips.append(new_trip)
     return {'message': 'Trip created successfully.'}, 200
 
+
 #Obtener viaje por id
 @trip_bp.route('/<int:id>', methods=['GET'])
 def get_trip(id):
     trip = get_trip_por_id(id, Database.trips)
-    departure = get_address(trip._deaparture_address, Database.addresses)
-    arrival = get_address(trip._arrival_address, Database.addresses)
-    driver = get_driver_by_vehicle(trip._vehicle_driver)
-    vehicle = get_vehicle_by_driver(trip._vehicle_driver)
-    response = {
-        'id': trip._id,
-        'departure_date': trip._departure_date,
-        'departure_time': trip._departure_time,
-        'available_seats': trip._available_seats,
-        'seat_price': trip._seat_price,
-        'creation_timestamp': trip._creation_timestamp,
-        'departure_address': departure.to_dict(),
-        'arrival_address': arrival.to_dict(),
-        'driver': driver.to_dict(),
-        'vehicle': vehicle.to_dict()
-    }
-    return response, 200
+    if not trip: return jsonify({'error': 'Trip not found'}), 404
+    print(trip)
+    return trip.to_dict(), 200
+
+
+def get_or_add_address(province_name:str, city_name:str, street:str, number:int):
+    for prov in Database.province:
+        if prov._name == province_name:
+            province = prov
+        else:
+            province = Province(len(Database.province) + 1, province_name)
+            Database.province.append(province)
+    for city in Database.cities:
+        if city._name == city_name:
+            city = city
+        else:
+            city = City(len(Database.cities) + 1, city_name, province)
+            Database.cities.append(city)
+    for addres in Database.addresses:
+        if addres._street == street and addres._number == number:
+            address = addres
+        else:
+            address = Address(len(Database.addresses) + 1, street, number, city)
+            Database.addresses.append(address)
+    return address
