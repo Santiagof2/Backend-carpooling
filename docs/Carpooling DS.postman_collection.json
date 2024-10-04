@@ -237,7 +237,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"departure_date\": \"fecha1\",\r\n    \"departure_time\": \"tiempo1\",\r\n    \"available_seats\": 4,\r\n    \"seat_price\": 134,\r\n    \"deaparture_address\": \"Buenos Aires, La Plata, Calle 34, 234\",\r\n    \"arrival_address\": \"Buenos Aires, La Plata, Calle 12, 111\",\r\n    \"vehicle_driver_id\": 1\r\n}",
+							"raw": "{\r\n    \"departure_date\": \"fecha1\",\r\n    \"departure_time\": \"tiempo1\",\r\n    \"available_seats\": 4,\r\n    \"seat_price\": 134,\r\n    \"departure_address\": \"Buenos Aires, La Plata, Calle 34, 234\",\r\n    \"arrival_address\": \"Buenos Aires, La Plata, Calle 12, 111\",\r\n    \"vehicle_driver_id\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -283,6 +283,38 @@
 							"path": [
 								"auth",
 								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Seleccionar un Rol",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 1,\r\n    \"role\": \"driver\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/role/select_role",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"role",
+								"select_role"
 							]
 						}
 					},

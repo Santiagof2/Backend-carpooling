@@ -77,19 +77,25 @@ def create_trip():
     available_seats = data.get('available_seats')
     seat_price = data.get('seat_price')
     creation_timestamp = datetime.now().strftime('%Y-%m-%d')
+    vehicle_driver_id = data.get('vehicle_driver_id')
+    departure_address_str = data.get('departure_address', '')
+    arrival_address_str = data.get('arrival_address', '')
 
-    split_address = data.get('deaparture_address').split(', ')
-    deaparture_address = get_or_add_address(split_address[0], split_address[1], split_address[2], int(split_address[3]))
-    split_address = data.get('arrival_address').split(', ')
+    if not departure_address_str: return {'error': 'departure_address missing.'}, 400
+    split_address = departure_address_str.split(', ')
+    departure_address = get_or_add_address(split_address[0], split_address[1], split_address[2], int(split_address[3]))
+    
+    if not arrival_address_str: return {'error': 'arrival_address missing.'}, 400
+    split_address = arrival_address_str.split(', ')
     arrival_address = get_or_add_address(split_address[0], split_address[1], split_address[2], int(split_address[3]))
 
-    vehicle_driver = get_vehicle_driver_by_id(data.get('vehicle_driver_id'))
+    vehicle_driver = get_vehicle_driver_by_id(vehicle_driver_id)
     if not vehicle_driver: return {'error': 'vehicle_driver_id not found'}, 400
 
-    new_trip = Trip(id, status, departure_date, departure_time, available_seats, seat_price, creation_timestamp, deaparture_address, arrival_address, vehicle_driver)
+    new_trip = Trip(id, status, departure_date, departure_time, available_seats, seat_price, creation_timestamp, departure_address, arrival_address, vehicle_driver)
     
     Database.trips.append(new_trip)
-    return {'message': 'Trip created successfully.'}, 200
+    return {'message': 'Trip created successfully.', 'id': new_trip._id}, 200
 
 #Actualizar un viaje
 @trip_bp.route('/<int:id>', methods=['PUT'])
@@ -119,7 +125,6 @@ def update_trip(id):
 
     Database.trips.append(new_trip)
     return {'message': 'Trip created successfully.'}, 200
-
 
 #Obtener viaje por id
 @trip_bp.route('/<int:id>', methods=['GET'])
