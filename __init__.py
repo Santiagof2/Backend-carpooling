@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, request
 from server.config import Config
 from server.routes import *
+from flask_socketio import SocketIO, emit
 
 def create_app():
     
@@ -16,10 +17,35 @@ def create_app():
     app.register_blueprint(trip_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(role_selection)
+    app.register_blueprint(chat_bp)
     
     return app
 
 app = create_app()
+socketio = SocketIO(app)
+# Almacena conexiones de usuarios
+clients = {}
+
+@socketio.on('connect')
+def handle_connect():
+    # Almacena el usuario conectado
+    user_id = request.args.get('user_id')  # Por ejemplo, puedes enviar un user_id al conectarte
+    print('registra')
+    print(user_id)
+    clients[user_id] = request.sid
+
+@socketio.on('message')
+def handle_message(data):
+    recipient_id = data['recipient_id']
+    message = data['message']
+    print('message')
+    print(message)
+    if recipient_id in clients:
+        # Envía el mensaje solo al destinatario específico
+        print('envia algo')
+        emit('message', message, room=clients[recipient_id])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000)
+
