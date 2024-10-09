@@ -1,7 +1,7 @@
 from flask import Flask, request
 from server.config import Config
 from server.routes import *
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, send, join_room, leave_room
 
 def create_app():
     
@@ -30,29 +30,36 @@ app = create_app()
 
 # --------------------------------- SOCKETIO ---------------------------------
 
-socketio = SocketIO(app)
-# Almacena conexiones de usuarios
-clients = {}
+socketio = SocketIO(app, cors_allowed_origins="*")
 
+# Eventos de conexión
 @socketio.on('connect')
 def handle_connect():
-    # Almacena el usuario conectado
-    user_id = request.args.get('user_id')  # Por ejemplo, puedes enviar un user_id al conectarte
-    print('registra')
-    print(user_id)
-    clients[user_id] = request.sid
+    print('User connected')
 
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('User disconnected')
+
+# Crear o unirse a una sala
+@socketio.on('join_room')
+def handle_join_room(messageData):
+    room = messageData['room']
+    join_room(room)
+    send(f'{messageData["username"]} has entered the room.', to=room)
+
+# Salir de una sala
+@socketio.on('leave_room')
+def handle_leave_room(messageData):
+    room = messageData['room']
+    leave_room(room)
+    send(f'{messageData["username"]} has left the room.', to=room)
+
+# Enviar un mensaje
 @socketio.on('message')
 def handle_message(messageData):
-    sender_id = messageData['sender_id']
-    recipient_id = messageData['recipient_id']
-    message = messageData['message']
-    print('message')
-    print(message)
-    if recipient_id in clients:
-        # Envía el mensaje solo al destinatario específico
-        print('envia algo')
-        emit('message', messageData, room=clients[recipient_id])
+    room = messageData['room']
+    send(messageData, to=room)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
