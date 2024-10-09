@@ -22,6 +22,14 @@ def create_app():
     return app
 
 app = create_app()
+
+
+
+
+
+
+# --------------------------------- SOCKETIO ---------------------------------
+
 socketio = SocketIO(app)
 # Almacena conexiones de usuarios
 clients = {}
@@ -35,15 +43,16 @@ def handle_connect():
     clients[user_id] = request.sid
 
 @socketio.on('message')
-def handle_message(data):
-    recipient_id = data['recipient_id']
-    message = data['message']
+def handle_message(messageData):
+    sender_id = messageData['sender_id']
+    recipient_id = messageData['recipient_id']
+    message = messageData['message']
     print('message')
     print(message)
     if recipient_id in clients:
         # Envía el mensaje solo al destinatario específico
         print('envia algo')
-        emit('message', message, room=clients[recipient_id])
+        emit('message', messageData, room=clients[recipient_id])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
