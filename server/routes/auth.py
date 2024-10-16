@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Blueprint, jsonify, request
-from server.src.database import Database
+from server.database import Database
 
 auth_bp = Blueprint('auth_bp', __name__, url_prefix='/auth')
 

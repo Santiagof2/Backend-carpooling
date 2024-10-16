@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from server.src.database import Database
+from server.database import Database
 from server.models import PassengerTrip
 
 trip_join_bp = Blueprint('trip_db', __name__, url_prefix='/trip_join')

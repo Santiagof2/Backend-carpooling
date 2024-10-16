@@ -2,7 +2,7 @@ from datetime import datetime
 from pprint import pprint
 from flask import Blueprint, jsonify, request
 from server.models import Trip, Address, VehicleDriver, City, Vehicle, Province
-from server.src.database import Database
+from server.database import Database
 
 trip_bp = Blueprint('trip_bp', __name__, url_prefix='/trip')
 

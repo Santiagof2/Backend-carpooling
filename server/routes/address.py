@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, jsonify, request
 from server.models import Trip
-from server.src.database import Database
+from server.database import Database
 
 address_bp = Blueprint('address_bp', __name__, url_prefix='/address')
 

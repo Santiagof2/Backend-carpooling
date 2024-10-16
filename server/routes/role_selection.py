@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from server.src.database import Database
+from server.database import Database
 from server.models import Passenger, Driver
 
 role_selection = Blueprint('role_selection', __name__ , url_prefix='/role')
