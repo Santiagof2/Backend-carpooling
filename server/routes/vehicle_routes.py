@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request
 from server.models import Trip
 from server.db import db
 from server.models import Vehicle, VehicleDriver
-from .user import buscar_usuario_por_id
+from .user_routes import buscar_usuario_por_id
 
 vehicle_bp = Blueprint('vehicle_bp', __name__, url_prefix='/vehicles')
 

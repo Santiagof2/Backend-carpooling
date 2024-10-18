@@ -29,73 +29,76 @@ def get_users():
 
 # Obtener un usuario por ID
 @user_bp.route('/<int:id>', methods=['GET'])
-def obtener_usuario(id):
-    usuario = buscar_usuario_por_id(id, db.users)
-    
-    if usuario is None:
-        return jsonify({'error': 'Usuario no encontrado'}), 404
-    return jsonify(usuario.to_dict()), 200
+def get_user(id):
+    user = User.query.get(id)
+    if user is None:
+        return jsonify({'message': 'User not found'}), 404
+    return jsonify(user.to_dict())
 
-# Crear un nuevo usuario
+
 @user_bp.route('/', methods=['POST'])
-def crear_usuario():
-    global id_counter
+def create_user():
     data = request.get_json()
 
-    # Obtenemos los datos
-    name = data.get('name')
-    lastname = data.get('lastname')
-    email = data.get('email')
-    password = data.get('password')
-    username = data.get('username')
-    validacionMail = data.get('validacionMail')
+    # Validar los datos necesarios
+    if not data or not all(key in data for key in ['first_name', 'last_name', 'password', 'email', 'username']):
+        return jsonify({'message': 'Missing required fields'}), 400
 
-    # Validación
-    if not name or not lastname or not email or not password or not username or validacionMail is None:
-        return jsonify({'error': 'Faltan datos'}), 400
-
-    # Creción del usuario
-    user = User(
-        len(db.users) + 1,
-        name,
-        lastname,
-        password,
-        email,
-        username,
-        datetime.now().strftime('%Y-%m-%d'),
-        validacionMail
+    # Crear un nuevo usuario
+    new_user = User(
+        first_name=data['first_name'],
+        last_name=data['last_name'],
+        password=data['password'],  # Asegúrate de encriptar las contraseñas antes de guardarlas
+        email=data['email'],
+        username=data['username'],
+        creation_date=data.get('creation_date', '2024-10-18'),  # Usa la fecha actual o una por defecto
+        email_validation=data.get('email_validation', False)  # Valor por defecto en False si no se proporciona
     )
-    db.users.append(user)
-    
-    return jsonify({'mensaje': 'Usuario creado correctamente.', 'user_id': user._id}), 201
+
+    try:
+        # Agregar el nuevo usuario a la base de datos
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify(new_user.to_dict()), 201  # Retorna el usuario creado y un código 201 de creación exitosa
+    except Exception as e:
+        db.session.rollback()  # Hacer rollback si hay un error
+        return jsonify({'message': 'Error creating user', 'error': str(e)}), 500
 
 # Actualizar un usuario existente
 @user_bp.route('/<int:id>', methods=['PUT'])
-def actualizar_usuario(id):
-    usuario = buscar_usuario_por_id(id, db.users)
+def update_user(id):
+    # Buscar el usuario en la base de datos por ID
+    usuario = User.query.get(id)
     
     if usuario is None:
-        return jsonify({'error': 'Usuario no encontrado'}), 404
+        return jsonify({'error': 'User not found'}), 404
     
+    # Obtener los datos enviados en la petición
     data = request.get_json()
-    usuario._first_name= data.get('first_name', usuario._first_name)
-    usuario._last_name = data.get('last_name', usuario._last_name)
-    usuario._email = data.get('email', usuario._email)
-    usuario._username = data.get('username', usuario._username)
-    usuario._password = data.get('password', usuario._password)
-    usuario._email_validation = data.get('validacionMail', usuario._email_validation)
+    
+    # Actualizar los campos del usuario si están presentes en la petición
+    usuario.first_name = data.get('first_name', usuario.first_name)
+    usuario.last_name = data.get('last_name', usuario.last_name)
+    usuario.email = data.get('email', usuario.email)
+    usuario.username = data.get('username', usuario.username)
+    usuario.password = data.get('password', usuario.password)
+    usuario.email_validation = data.get('email_validation', usuario.email_validation)
 
-    return jsonify({'mensaje': 'Usuario modificado correctamente.'}), 200
+    # Guardar los cambios en la base de datos
+    db.session.commit()
 
-# Eliminar un usuario
+    return jsonify({'message': 'User updated successfully.'}), 200
+
 @user_bp.route('/<int:id>', methods=['DELETE'])
-def eliminar_usuario(id):
-    usuario = buscar_usuario_por_id(id, db.users)
+def delete_user(id):
+    # Buscar el usuario en la base de datos por ID
+    usuario = User.query.get(id)
     
     if usuario is None:
-        return jsonify({'error': 'Usuario no encontrado'}), 404
+        return jsonify({'error': 'User not found'}), 404
     
-    db.users.remove(usuario)
-    
-    return jsonify({'mensaje': 'Usuario eliminado'}), 200
+    # Eliminar el usuario de la base de datos
+    db.session.delete(usuario)
+    db.session.commit()
 
+    return jsonify({'message': 'User deleted successfully.'}), 200
