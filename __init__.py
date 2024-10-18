@@ -9,7 +9,7 @@ from validator import Auth0JWTBearerTokenValidator
 require_auth = ResourceProtector()
 validator = Auth0JWTBearerTokenValidator(
     "dev-voifjkzdk2go4y1p.us.auth0.com",
-    "carpu"
+    "carpooling"
 )
 require_auth.register_token_validator(validator)
 def create_app():
