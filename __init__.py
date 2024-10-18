@@ -17,6 +17,8 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(role_selection)
     app.register_blueprint(vehicle_bp)
+    app.register_blueprint(passager_bp)
+
     return app
 
 app = create_app()

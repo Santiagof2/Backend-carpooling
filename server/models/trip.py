@@ -2,7 +2,7 @@ from server.models.vehicle_driver import VehicleDriver
 from server.models.address import Address
 
 class Trip:
-    def __init__(self, id: int, status: str, departure_date: str, departure_time: str, available_seats: int, seat_price: float, creation_timestamp: int, deaparture_address: Address, arrival_address: Address, vehicle_driver: VehicleDriver) -> None:
+    def __init__(self, id: int, departure_date: str, departure_time: str, available_seats: int, seat_price: float, creation_timestamp: int, deaparture_address: Address, arrival_address: Address, vehicle_driver: VehicleDriver, status: str = 'active') -> None:
         self._id = id
         self._status = status
         self._departure_date = departure_date
@@ -13,7 +13,10 @@ class Trip:
         self._deaparture_address = deaparture_address
         self._arrival_address = arrival_address
         self._vehicle_driver = vehicle_driver
-    
+
+    def cancel_trip(self):
+        self._status = 'cancelled'
+
     def to_dict(self):
         return {
             'id': self._id,
@@ -24,5 +27,6 @@ class Trip:
             'creation_timestamp': self._creation_timestamp,
             'deaparture_address': self._deaparture_address.to_dict(),
             'arrival_address': self._arrival_address.to_dict(),
-            'vehicle_driver': self._vehicle_driver.to_dict()
+            'vehicle_driver': self._vehicle_driver.to_dict(),
+            'status': self._status
         }
