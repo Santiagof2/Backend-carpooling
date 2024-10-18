@@ -44,6 +44,9 @@ def create_user():
     if not data or not all(key in data for key in ['first_name', 'last_name', 'password', 'email', 'username']):
         return jsonify({'message': 'Missing required fields'}), 400
 
+
+    now_utc = datetime.utcnow()
+    now_string = now_utc.strftime('%Y-%m-%d %H:%M:%S') 
     # Crear un nuevo usuario
     new_user = User(
         first_name=data['first_name'],
@@ -51,7 +54,7 @@ def create_user():
         password=data['password'],  # Asegúrate de encriptar las contraseñas antes de guardarlas
         email=data['email'],
         username=data['username'],
-        creation_date=data.get('creation_date', '2024-10-18'),  # Usa la fecha actual o una por defecto
+        creation_date = now_string,
         email_validation=data.get('email_validation', False)  # Valor por defecto en False si no se proporciona
     )
 
