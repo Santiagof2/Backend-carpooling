@@ -7,3 +7,5 @@ def init_db(app: Flask):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://pruebadb:sdklg010@mysql-pruebadb.alwaysdata.net/pruebadb_db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
