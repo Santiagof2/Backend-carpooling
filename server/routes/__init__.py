@@ -6,6 +6,7 @@ from server.routes.auth import auth_bp
 from server.routes.role_selection import role_selection
 from server.routes.vehicle import vehicle_bp
 from server.routes.passager import passager_bp
+from server.routes.driver import driver_bp
 
 
-__all__ = ['user_bp', 'trip_join_bp', 'trip_bp', 'address_bp', 'auth_bp', 'role_selection','vehicle_bp', 'passager_bp']
+__all__ = ['user_bp', 'trip_join_bp', 'trip_bp', 'address_bp', 'auth_bp', 'role_selection','vehicle_bp', 'passager_bp', 'driver_bp']
