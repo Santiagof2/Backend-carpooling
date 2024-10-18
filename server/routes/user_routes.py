@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Blueprint, jsonify, request
-from server.database import Database
+from server.db import db
 from server.models import User
 
 user_bp = Blueprint('user_bp', __name__, url_prefix='/users')
@@ -22,13 +22,15 @@ def buscar_usuario_por_id(id, usuarios: list[User]) -> User | None:
 
 # Obtener todos los usuarios
 @user_bp.route('/', methods=['GET'])
-def obtener_usuarios():
-    return jsonify([user.to_dict() for user in  Database.users]), 200
+def get_users():
+    users = User.query.all()
+    result = [user.to_dict() for user in users]
+    return jsonify(result)
 
 # Obtener un usuario por ID
 @user_bp.route('/<int:id>', methods=['GET'])
 def obtener_usuario(id):
-    usuario = buscar_usuario_por_id(id, Database.users)
+    usuario = buscar_usuario_por_id(id, db.users)
     
     if usuario is None:
         return jsonify({'error': 'Usuario no encontrado'}), 404
@@ -54,7 +56,7 @@ def crear_usuario():
 
     # Creción del usuario
     user = User(
-        len(Database.users) + 1,
+        len(db.users) + 1,
         name,
         lastname,
         password,
@@ -63,14 +65,14 @@ def crear_usuario():
         datetime.now().strftime('%Y-%m-%d'),
         validacionMail
     )
-    Database.users.append(user)
+    db.users.append(user)
     
     return jsonify({'mensaje': 'Usuario creado correctamente.', 'user_id': user._id}), 201
 
 # Actualizar un usuario existente
 @user_bp.route('/<int:id>', methods=['PUT'])
 def actualizar_usuario(id):
-    usuario = buscar_usuario_por_id(id, Database.users)
+    usuario = buscar_usuario_por_id(id, db.users)
     
     if usuario is None:
         return jsonify({'error': 'Usuario no encontrado'}), 404
@@ -88,12 +90,12 @@ def actualizar_usuario(id):
 # Eliminar un usuario
 @user_bp.route('/<int:id>', methods=['DELETE'])
 def eliminar_usuario(id):
-    usuario = buscar_usuario_por_id(id, Database.users)
+    usuario = buscar_usuario_por_id(id, db.users)
     
     if usuario is None:
         return jsonify({'error': 'Usuario no encontrado'}), 404
     
-    Database.users.remove(usuario)
+    db.users.remove(usuario)
     
     return jsonify({'mensaje': 'Usuario eliminado'}), 200
 

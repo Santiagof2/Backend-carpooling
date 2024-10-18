@@ -1,24 +1,26 @@
-class User:
-    def __init__(self, id: int, first_name: str, last_name: str, password: str, email: str, username: str, creation_date: str, email_validation: bool):
-        self._id = id
-        self._first_name = first_name
-        self._last_name = last_name
-        self._password = password
-        self._email = email
-        self._username = username
-        self._creation_date = creation_date
-        self._email_validation = email_validation
+from server.db import db  # Importar el objeto db desde db.py
+
+class User(db.Model):
+    __tablename__ = 'User'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(45), nullable=False)
+    last_name = db.Column(db.String(45), nullable=False)
+    password = db.Column(db.String(45), nullable=False)
+    email = db.Column(db.String(45), unique=True, nullable=False)
+    username = db.Column(db.String(45), unique=True, nullable=False)
+    creation_date = db.Column(db.String(45), nullable=False)
+    email_validation = db.Column(db.Boolean, nullable=False, default=False)
 
     def to_dict(self):
         return {
-            'id': self._id,
-            'first_name': self._first_name,
-            'last_name':self._last_name,
-            #'password':self._password,
-            'email':self._email,
-            'username':self._username,
-            'creation_date':self._creation_date,
-            'email_validation':self._email_validation
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'email': self.email,
+            'username': self.username,
+            'creation_date': self.creation_date,
+            'email_validation': self.email_validation
         }
 
 class Driver(User):

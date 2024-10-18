@@ -2,7 +2,7 @@ from datetime import datetime
 from pprint import pprint
 from flask import Blueprint, jsonify, request
 from server.models import Trip, Address, VehicleDriver, City, Vehicle, Province
-from server.database import Database
+from server.db import db
 
 trip_bp = Blueprint('trip_bp', __name__, url_prefix='/trip')
 
@@ -21,39 +21,39 @@ def get_address(trip_address, addresses: list):
     return jsonify({'error': 'Direccion no encontrada'}), 404
 
 def get_vehicle_driver_by_id(vehicle_driver_id):
-    for vehicle_driver in Database.vehicle_drivers:
+    for vehicle_driver in db.vehicle_drivers:
         if vehicle_driver._id == vehicle_driver_id:
             vehicle_driver = vehicle_driver
             return vehicle_driver
 
 def get_driver_by_vehicle(vehicle_driver):
-    for vehicle_driver in Database.vehicle_drivers:
+    for vehicle_driver in db.vehicle_drivers:
         if vehicle_driver == vehicle_driver:
             driver = get_driver_from_vehicle(vehicle_driver._driver)
             return driver
     return jsonify({'error': 'Conductor no encontrado'}), 404
 
 def get_driver_from_vehicle(_driver):
-    for driver in Database.drivers:
+    for driver in db.drivers:
         if driver == _driver:
             return get_user_by_driver(driver.user)
     return jsonify({'error': 'Conductor no encontrado'}), 404
 
 def get_user_by_driver(_user):
-    for user in Database.users:
+    for user in db.users:
         if user == _user:
             return user
     return jsonify({'error': 'Usuario no encontrado'}), 404
 
 def get_vehicle_by_driver(vehicle_driver_id):
-    for vehicle_driver in Database.vehicle_drivers:
+    for vehicle_driver in db.vehicle_drivers:
         if vehicle_driver == vehicle_driver_id:
             vehicle = get_vehicle_from_vehicle_driver(vehicle_driver._vehicle)
             return vehicle
     return jsonify({'error': 'Vehiculo no encontrado'}), 404
 
 def get_vehicle_from_vehicle_driver(_vehicle):
-    for vehicle in Database.vehicles:
+    for vehicle in db.vehicles:
         if vehicle == _vehicle:
             return vehicle
     return jsonify({'error': 'Vehiculo no encontrado'}), 404
@@ -61,7 +61,7 @@ def get_vehicle_from_vehicle_driver(_vehicle):
 # listar todos los viajes
 @trip_bp.route('/', methods=['GET'])
 def get_trips():
-    list_trips = Database.trips
+    list_trips = db.trips
     return jsonify([trip.to_dict() for trip in list_trips]), 200
 
 # cargar un viaje
@@ -70,7 +70,7 @@ def create_trip():
     data = request.get_json()
 
     # Obtenemos los datos
-    id = len(Database.trips) + 1
+    id = len(db.trips) + 1
     status = 'activo'
     departure_date = data.get('departure_date')
     departure_time = data.get('departure_time')
@@ -94,7 +94,7 @@ def create_trip():
 
     new_trip = Trip(id, status, departure_date, departure_time, available_seats, seat_price, creation_timestamp, departure_address, arrival_address, vehicle_driver)
     
-    Database.trips.append(new_trip)
+    db.trips.append(new_trip)
     return {'message': 'Trip created successfully.', 'id': new_trip._id}, 200
 
 #Actualizar un viaje
@@ -123,35 +123,35 @@ def update_trip(id):
 
     new_trip = Trip(id, status, departure_date, departure_time, available_seats, seat_price, creation_timestamp, deaparture_address, arrival_address, vehicle_driver)
 
-    Database.trips.append(new_trip)
+    db.trips.append(new_trip)
     return {'message': 'Trip created successfully.'}, 200
 
 #Obtener viaje por id
 @trip_bp.route('/<int:id>', methods=['GET'])
 def get_trip(id):
-    trip = get_trip_por_id(id, Database.trips)
+    trip = get_trip_por_id(id, db.trips)
     if not trip: return jsonify({'error': 'Trip not found'}), 404
     print(trip)
     return trip.to_dict(), 200
 
 
 def get_or_add_address(province_name:str, city_name:str, street:str, number:int):
-    for prov in Database.province:
+    for prov in db.province:
         if prov._name == province_name:
             province = prov
         else:
-            province = Province(len(Database.province) + 1, province_name)
-            Database.province.append(province)
-    for city in Database.cities:
+            province = Province(len(db.province) + 1, province_name)
+            db.province.append(province)
+    for city in db.cities:
         if city._name == city_name:
             city = city
         else:
-            city = City(len(Database.cities) + 1, city_name, province)
-            Database.cities.append(city)
-    for addres in Database.addresses:
+            city = City(len(db.cities) + 1, city_name, province)
+            db.cities.append(city)
+    for addres in db.addresses:
         if addres._street == street and addres._number == number:
             address = addres
         else:
-            address = Address(len(Database.addresses) + 1, street, number, city)
-            Database.addresses.append(address)
+            address = Address(len(db.addresses) + 1, street, number, city)
+            db.addresses.append(address)
     return address
