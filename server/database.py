@@ -60,3 +60,5 @@ class Database:
         PassengerTrip(6, Passengers[5], trips[0]),
         PassengerTrip(7, Passengers[6], trips[0])
     ]
+
+    trip_requests: list[PassengerTrip] = []
