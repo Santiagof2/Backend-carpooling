@@ -1,5 +1,5 @@
 from server.models.vehicle import Vehicle
-from server.models.user import Driver
+from server.models.driver import Driver
 
 class VehicleDriver:
     def __init__(self, id: int, driver: Driver, vehicle: Vehicle) -> None:

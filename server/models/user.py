@@ -23,18 +23,7 @@ class User(db.Model):
             'email_validation': self.email_validation
         }
 
-class Driver(User):
-    def __init__(self, id: int, User: User):
-        self._id = id
-        self.user = User
-    
-    def to_dict(self):
-        return {
-            'id': self._id,
-            'user': self.user.to_dict()
-        }
-
-class Passenger(User):
+class Passager(User):
     def __init__(self, id: int, User: User):
         self._id = id
         self.user = User

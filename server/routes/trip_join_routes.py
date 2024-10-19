@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from server.db import db
-from server.models import PassengerTrip
+from server.models import PassagerTrip
 
 trip_join_bp = Blueprint('trip_db', __name__, url_prefix='/trip_join')
 
@@ -12,7 +12,7 @@ def join_PassengerTrip():
     id = len(db.PassengerTrips) + 1
     descontar_cupo(data.get('id_trip'))
     passenger= get_passenger(data.get('passenger_id'))
-    new_PassengerTrip = PassengerTrip(id, data['id_trip'], passenger)
+    new_PassengerTrip = PassagerTrip(id, data['id_trip'], passenger)
     db.PassengerTrips.append(new_PassengerTrip)
     return jsonify({'message': 'Pasajero agregado exitosamente'}), 200
 

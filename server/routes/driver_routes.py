@@ -1,8 +1,14 @@
 from flask import Blueprint, jsonify, request
 from server.db import db
-from server.models import User
+from server.models import Driver
 
-driver_bp = Blueprint('driver_bp', __name__, url_prefix='/driver')
+driver_bp = Blueprint('driver_bp', __name__, url_prefix='/drivers')
+
+@driver_bp.route('/', methods=['GET'])
+def get_drivers():
+    drivers = Driver.query.all()
+    result =[driver.to_dict() for driver in drivers]
+    return jsonify(result)
 
 @driver_bp.route('/trips/<int:trip_id>/requests', methods=['GET'])
 def list_passenger_requests(trip_id):

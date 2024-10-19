@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from server.db import db
-from server.models import Passenger, Driver
+from server.models import Passager, Driver
 
 role_selection = Blueprint('role_selection', __name__ , url_prefix='/role')
 def get_user_por_id(id):
@@ -25,7 +25,7 @@ def select_role():
     if role == 'passenger':
         passenger = next((passenger for passenger in db.Passengers if passenger._id == user_id), None) #db.passagers 
         if not passenger:
-            db.Passengers.append(Passenger(db.Passengers.__len__()+1, user))
+            db.Passengers.append(Passager(db.Passengers.__len__()+1, user))
             return jsonify({'error': 'Perfil del pasajero agregado', 'data': user.to_dict()}), 200
         return jsonify({'message': 'Estas en modo pasajero', 'data': user.to_dict()}), 200
 
