@@ -5,21 +5,6 @@ from server.models import User
 
 user_bp = Blueprint('user_bp', __name__, url_prefix='/users')
 
-
-
-def buscar_usuario_por_id(id, usuarios: list[User]) -> User | None:
-    """
-    Busca un usuario por su ID en la lista de usuarios.
-    
-    :param id: El ID del usuario que se desea buscar.
-    :param usuarios: La lista de usuarios (diccionarios).
-    :return: El usuario encontrado o None si no existe.
-    """
-    for user in usuarios:
-        if user._id == id:
-            return user
-    return None
-
 # Obtener todos los usuarios
 @user_bp.route('/', methods=['GET'])
 def get_users():
