@@ -1,4 +1,4 @@
-from server.models.user import Passager
+from server.models.passager import Passager
 from server.models.trip import Trip
 
 class PassagerTrip:
