@@ -1,41 +1,46 @@
-class Province:
-    def __init__(self, id: int, name: str) -> None:
-        self._id = id
-        self._name = name
+from server.db import db  # Importar el objeto db desde db.py
+
+class Province(db.Model):
+    __tablename__ = 'Province'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(45), nullable=False)
 
     def to_dict(self):
         return {
-            'province_id': self._id,
-            'name': self._name
+            'name': self.name
         }
-    
-class City:
-    def __init__(self, id: int, name: str, province: Province) -> None:
-        self._id = id
-        self._name = name
-        self._province = province
+
+class City(db.Model):
+    __tablename__ = 'City'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(45), nullable=False)
+    province_id = db.Column(db.Integer, db.ForeignKey('Province.id'), nullable=False)
+
+    province = db.relationship('Province', backref='City')
 
     def to_dict(self):
         return {
-            'id': self._id,
-            'name': self._name,
-            'province': self._province.to_dict()
+            'id': self.id,
+            'name': self.name,
+            'province': self.province.to_dict()
         }
 
-class Address:
-    def __init__(self, id: int, street: str, number: int, city: City):
-        self._id = id
-        self._street = street
-        self._number = number
-        self._city = city
+class Address(db.Model):
+    __tablename__ = 'Address'
+
+    id = db.Column(db.Integer, primary_key=True)
+    street = db.Column(db.String(45), nullable=False)
+    number = db.Column(db.Integer, nullable=False)
+    city_id = db.Column(db.Integer, db.ForeignKey('City.id'), nullable=False)
+
+    city = db.relationship('City', backref='Address')
 
     def to_dict(self):
         return {
-            'id': self._id,
-            'street': self._street,
-            'number': self._number,
-            'city': self._city.to_dict()
+            'id': self.id,
+            'street': self.street,
+            'number': self.number,
+            'city': self.city.to_dict()
         }
-    
-    def get_id(self):
-        return self._id

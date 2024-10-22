@@ -1,32 +1,33 @@
-from server.models.vehicle_driver import VehicleDriver
+from server.db import db
+from server.models.vehicle_driver import Vehicle_Driver
 from server.models.address import Address
 
-class Trip:
-    def __init__(self, id: int, departure_date: str, departure_time: str, available_seats: int, seat_price: float, creation_timestamp: int, deaparture_address: Address, arrival_address: Address, vehicle_driver: VehicleDriver, status: str = 'active') -> None:
-        self._id = id
-        self._status = status
-        self._departure_date = departure_date
-        self._departure_time = departure_time
-        self._available_seats = available_seats
-        self._seat_price = seat_price
-        self._creation_timestamp = creation_timestamp
-        self._deaparture_address = deaparture_address
-        self._arrival_address = arrival_address
-        self._vehicle_driver = vehicle_driver
+class Trip(db.Model):
+    __tablename__ = 'Trip'
 
-    def cancel_trip(self):
-        self._status = 'cancelled'
+    id = db.Column(db.Integer, primary_key=True)
+    departure_date = db.Column(db.Date, nullable=False)
+    departure_time = db.Column(db.Time, nullable=False)
+    available_seats = db.Column(db.Integer, nullable=False)
+    seat_price = db.Column(db.Float, nullable=False)
+    creation_timestamp = db.Column(db.DateTime, nullable=False)
+    departure_address_id = db.Column(db.Integer, db.ForeignKey('Address.id'), nullable=False)
+    arrival_address_id = db.Column(db.Integer, db.ForeignKey('Address.id'), nullable=False)
+    vehicle_driver_id = db.Column(db.Integer, db.ForeignKey('Vehicle_Driver.driver_id'), nullable=False)
+
+    departure_address = db.relationship('Address', foreign_keys=[departure_address_id])
+    arrival_address = db.relationship('Address', foreign_keys=[arrival_address_id])
+    vehicle_driver = db.relationship('Vehicle_Driver', foreign_keys=[vehicle_driver_id])
 
     def to_dict(self):
         return {
-            'id': self._id,
-            'departure_date': self._departure_date,
-            'departure_time': self._departure_time,
-            'available_seats': self._available_seats,
-            'seat_price': self._seat_price,
-            'creation_timestamp': self._creation_timestamp,
-            'deaparture_address': self._deaparture_address.to_dict(),
-            'arrival_address': self._arrival_address.to_dict(),
-            'vehicle_driver': self._vehicle_driver.to_dict(),
-            'status': self._status
+            'id': self.id,
+            'departure_date': self.departure_date,
+            'departure_time': self.departure_time,
+            'available_seats': self.available_seats,
+            'seat_price': self.seat_price,
+            'creation_timestamp': self.creation_timestamp,
+            'departure_address': self.departure_address.to_dict() if self.departure_address else None,
+            'arrival_address': self.arrival_address.to_dict() if self.arrival_address else None,
+            'vehicle_driver': self.vehicle_driver.to_dict() if self.vehicle_driver else None,
         }

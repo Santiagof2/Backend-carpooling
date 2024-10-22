@@ -1,11 +1,15 @@
 # Backend-Carpooling
 # Version: 1.0
 
-[dscarpooling-back.alwaysdata.net](dscarpooling-back.alwaysdata.net)
+## Iniciar el proyecto
+   ```bash
+   pip install -r .\req.txt
+   ```
+   ```bash
+   py .\app.py
+   ```
 
 Coleccion de Postman en docs/
-
-
 /users:
 {
     / GET #Retorna todos los usuarios
@@ -28,3 +32,5 @@ Coleccion de Postman en docs/
 {
     /select_role POST #modifica el rol del usuario
 }
+
+Backend corriendo en remoto: [dscarpooling-back.alwaysdata.net](dscarpooling-back.alwaysdata.net)

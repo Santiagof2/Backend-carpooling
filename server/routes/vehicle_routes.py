@@ -1,70 +1,63 @@
 from datetime import datetime
 from flask import Blueprint, jsonify, request
 from server.models import Trip
-from server.database import Database
-from server.models import Vehicle, VehicleDriver
-from .user import buscar_usuario_por_id
+from server.db import db
+from server.models import Vehicle, Vehicle_Driver
 
 vehicle_bp = Blueprint('vehicle_bp', __name__, url_prefix='/vehicles')
-
-def get_vehicle_por_id(id, vehicles):
-    for vehicle in vehicles:
-        if vehicle._id == id:
-            return vehicle
-    return None
-
-#Obtener vehiculo por condutor ID
-@vehicle_bp.route('/<int:id>', methods=['GET'])
-def get_vehicle(id):
-    vehicle = get_vehicle_por_id(id, Database.vehicles)
-    if not vehicle: return jsonify({'error': 'vehiculo no encontrado'}), 404
-    return vehicle.to_dict(), 200
 
 # listar todos los vehiculos
 @vehicle_bp.route('/', methods=['GET'])
 def get_vehicles():
-    list_vehicles = Database.vehicles
-    return jsonify([vehicle.to_dict() for vehicle in list_vehicles]), 200
+    vehicles = Vehicle.query.all()
+    result = [vehicle.to_dict() for vehicle in vehicles]
+    return jsonify(result)
+    
+#Obtener vehiculo por condutor ID
+@vehicle_bp.route('/<int:id>', methods=['GET'])
+def get_vehicle(id):
+    vehicle = Vehicle.query.get(id)
+    if vehicle is None:
+        return jsonify({'error': 'Vehiculo no encontrado'}), 404
+    return jsonify(vehicle.to_dict())
 
 #Crear Vehiculo
 @vehicle_bp.route('/', methods=['POST'])
-def crear_vehicle():
+def create_vehicle():
     data = request.get_json()
     
+    if not license_plate or not all(key in data for key in ['license_plate', 'brand', 'model', 'color', 'year']):
+        return jsonify({'error': 'Faltan datos'}), 400
+
     # Obtenemos los datos
     license_plate = data.get('license_plate')
     brand = data.get('brand')
     model = data.get('model')
     color = data.get('color')
     year  = data.get('year')
-    user_id = data.get('user_id')
     
-    # Validación
-    if not license_plate  or not brand or not  model or not color or not year or user_id is None:
-        return jsonify({'error': 'Faltan datos'}), 400
-    
-    driver= buscar_usuario_por_id(user_id,Database.users)
+    driver= get_driver(user_id,db.users)
     if not driver:
         return jsonify({'error': 'Usuario no encontrado'}), 404
 
     # Creción del vehiculo
     vehicle = Vehicle(
-        len(Database.vehicles) + 1,
+        len(db.vehicles) + 1,
         license_plate,
         brand,
         model,
         color,
         year   
     )
-    Database.vehicles.append(vehicle)
+    db.vehicles.append(vehicle)
 
     # Crear la relación entre el usuario y el vehículo
-    vehicle_driver = VehicleDriver(
-        len(Database.vehicle_drivers) + 1,
+    vehicle_driver = Vehicle_Driver(
+        len(db.vehicle_drivers) + 1,
         driver,
         vehicle
     )
-    Database.vehicle_drivers.append(vehicle_driver)
+    db.vehicle_drivers.append(vehicle_driver)
 
     return jsonify({
         'mensaje': 'Vehículo creado correctamente y asociado al usuario.',
@@ -76,7 +69,7 @@ def crear_vehicle():
 # Actualizar un Vehiculo existente
 @vehicle_bp.route('/<int:id>', methods=['PUT'])
 def actualizar_usuario(id):
-    vehicle = get_vehicle_por_id(id, Database.vehicles)
+    vehicle = get_vehicle(id, db.vehicles)
     
     if vehicle is None:
         return jsonify({'error': 'Vehiculo no encontrado'}), 404
@@ -93,11 +86,11 @@ def actualizar_usuario(id):
 # Eliminar un Vehiculo
 @vehicle_bp.route('/<int:id>', methods=['DELETE'])
 def eliminar_vehicle(id):
-    vehicle = get_vehicle_por_id(id, Database.vehicles)
+    vehicle = get_vehicle(id, db.vehicles)
     
     if vehicle is None:
         return jsonify({'error': 'Vehiculo no encontrado'}), 404
     
-    Database.vehicles.remove(vehicle)
+    db.vehicles.remove(vehicle)
     
     return jsonify({'mensaje': 'Vehiculo eliminado'}), 200
