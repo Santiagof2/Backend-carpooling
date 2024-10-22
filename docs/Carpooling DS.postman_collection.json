@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "18fc7158-b028-4624-a004-a733baada29a",
+		"_postman_id": "97614aed-bbf1-40ab-b185-53f3cf07bc47",
 		"name": "Carpooling DS",
 		"description": "Colección para consumir la API de Carpooling DS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -251,6 +251,166 @@
 							],
 							"path": [
 								"trip"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Viaje (Pasajero)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"passenger_id\": 1 }"
+						},
+						"url": {
+							"raw": "{{base_url}}/passager/trips/:trip_id/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"passager",
+								"trips",
+								":trip_id",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Viaje (Conductor)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"driver_id\": 1 }"
+						},
+						"url": {
+							"raw": "{{base_url}}/driver/trips/:trip_id/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"driver",
+								"trips",
+								":trip_id",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rechazar Pasajero (Conductor)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/driver/trips/:trip_id/requests/:request_id/reject",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"driver",
+								"trips",
+								":trip_id",
+								"requests",
+								":request_id",
+								"reject"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								},
+								{
+									"key": "request_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Aceptar Pasajero (Conductor)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/driver/trips/:trip_id/requests/:request_id/accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"driver",
+								"trips",
+								":trip_id",
+								"requests",
+								":request_id",
+								"accept"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								},
+								{
+									"key": "request_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Peticiones de Pasajeros (Conductor)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/driver/trips/:trip_id/requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"driver",
+								"trips",
+								":trip_id",
+								"requests"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								}
 							]
 						}
 					},
