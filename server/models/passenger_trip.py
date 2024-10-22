@@ -1,15 +1,20 @@
+from server.db import db
 from server.models.passenger import Passenger
 from server.models.trip import Trip
 
-class passengerTrip:
-    def __init__(self, id: int, passenger: Passenger, trip: Trip, status: str = "pending"):
-        self._id = id
-        self._passenger = passenger
-        self._trip = trip
-        self._status = status
+class passengerTrip(db.Model):
+    __tablename__ = 'Passenger_Trip'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    passenger_id = db.Column(db.Integer, db.ForeignKey('Passenger.user_id'), nullable=False)
+    trip_id = db.Column(db.Integer, db.ForeignKey('Trip.id'), nullable=False)
+    accepted = db.Column(db.Boolean, default=False)
+
+    passenger = db.relationship('Passenger', backref='passenger_trip')
+    trip = db.relationship('Trip', backref='passenger_trip')
 
     def accept(self):
-        self._status = "accepted"
+        self.accepted = "accepted"
 
     def reject(self):
         self._status = "rejected"
@@ -20,8 +25,8 @@ class passengerTrip:
 
     def to_dict(self):
         return {
-            'id': self._id,
-            'passenger': self._passenger.to_dict(),
-            'trip': self._trip.to_dict(),
-            'status': self._status
+            'id': self.id,
+            'passenger': self.passenger.to_dict(),
+            'trip': self.trip.to_dict(),
+            'status': self.accepted
         }

@@ -1,13 +1,12 @@
 from server.db import db
 from server.models import User
 
-class Passenger(User):
-    def __init__(self, id: int, User: User):
-        self._id = id
-        self.user = User
+class Passenger(db.Model):
+    __tablename__ = 'Passenger'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), primary_key=True)
+
+    user = db.relationship('User', backref='passenger')
     
     def to_dict(self):
-        return {
-            'id': self._id,
-            'user': self.user.to_dict()
-        }
+        return self.user.to_dict() if self.user else None
