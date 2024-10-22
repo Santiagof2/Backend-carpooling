@@ -9,6 +9,7 @@ from server.routes.vehicle_routes import vehicle_bp
 from server.routes.passenger_routes import passenger_bp
 from server.routes.message_routes import message_bp
 from server.routes.vehicle_driver_routes import vehicle_driver_bp
+from server.routes.passenger_trip_routes import passenger_trip_bp
 
 
-__all__ = ['vehicle_driver_bp', 'user_bp', 'driver_bp', 'trip_join_bp', 'trip_bp', 'address_bp', 'auth_bp', 'role_selection','vehicle_bp', 'passenger_bp', 'message_bp']
+__all__ = ['passenger_trip_bp', 'vehicle_driver_bp', 'user_bp', 'driver_bp', 'trip_join_bp', 'trip_bp', 'address_bp', 'auth_bp', 'role_selection','vehicle_bp', 'passenger_bp', 'message_bp']

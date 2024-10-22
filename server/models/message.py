@@ -5,17 +5,17 @@ class Message(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(1000), nullable=False)
-    created_at = db.Column(db.String(45), nullable=False) # diferente a los nombres del der
-    id_user = db.Column(db.Integer, db.ForeignKey('User.id'), default=None, nullable=True) 
-    id_trip = db.Column(db.Integer, nullable=False) 
+    created_at = db.Column(db.DateTime, nullable=False)
+    trip_id = db.Column(db.Integer, nullable=False) 
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), default=None, nullable=True) 
     is_system = db.Column(db.Boolean, default=False, nullable=True)
 
     def to_dict(self):
         return {
             'id': self.id,
-            'id_user': self.id_user,
-            'id_trip': self.id_trip,
             'message': self.message,
-            'created_at': self.created_at,
+            'user_id': self.user_id,
+            'trip_id': self.trip_id,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             'is_system': self.is_system,
         }

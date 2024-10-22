@@ -22,11 +22,11 @@ class Trip(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'departure_date': self.departure_date,
-            'departure_time': self.departure_time,
+            'departure_date': self.departure_date.strftime('%Y-%m-%d'),
+            'departure_time': self.departure_time.strftime('%H:%M:%S'),
             'available_seats': self.available_seats,
             'seat_price': self.seat_price,
-            'creation_timestamp': self.creation_timestamp,
+            'creation_timestamp': self.creation_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
             'departure_address': self.departure_address.to_dict() if self.departure_address else None,
             'arrival_address': self.arrival_address.to_dict() if self.arrival_address else None,
             'vehicle_driver': self.vehicle_driver.to_dict() if self.vehicle_driver else None,
