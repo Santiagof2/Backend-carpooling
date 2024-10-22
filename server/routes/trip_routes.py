@@ -12,12 +12,12 @@ def get_trips():
     result = [trip.to_dict() for trip in trips]
     return jsonify(result)
 
-# def get_trip_por_id(id, trips):
-#     for trip in trips:
-#         if trip._id == id:
-#             return trip
-#     trip = None
-#     return trip
+@trip_bp.route('/<int:id>', methods=['GET'])
+def get_trip(id):
+    trip = Trip.query.get(id)
+    if trip is None:
+        return jsonify({'message': 'Trip not found'}), 404
+    return jsonify(trip.to_dict())
 
 # #esta funcion no corresponde a esta BP.
 # def get_address(trip_address, addresses: list):
