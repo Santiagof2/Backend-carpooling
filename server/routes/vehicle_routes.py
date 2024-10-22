@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Blueprint, jsonify, request
 from server.models import Trip
 from server.db import db
-from server.models import Vehicle, VehicleDriver
+from server.models import Vehicle, Vehicle_Driver
 
 vehicle_bp = Blueprint('vehicle_bp', __name__, url_prefix='/vehicles')
 
@@ -52,7 +52,7 @@ def create_vehicle():
     db.vehicles.append(vehicle)
 
     # Crear la relación entre el usuario y el vehículo
-    vehicle_driver = VehicleDriver(
+    vehicle_driver = Vehicle_Driver(
         len(db.vehicle_drivers) + 1,
         driver,
         vehicle

@@ -1,8 +1,8 @@
-from server.models.vehicle_driver import VehicleDriver
+from server.models.vehicle_driver import Vehicle_Driver
 from server.models.address import Address
 
 class Trip:
-    def __init__(self, id: int, departure_date: str, departure_time: str, available_seats: int, seat_price: float, creation_timestamp: int, deaparture_address: Address, arrival_address: Address, vehicle_driver: VehicleDriver, status: str = 'active') -> None:
+    def __init__(self, id: int, departure_date: str, departure_time: str, available_seats: int, seat_price: float, creation_timestamp: int, deaparture_address: Address, arrival_address: Address, vehicle_driver: Vehicle_Driver, status: str = 'active') -> None:
         self._id = id
         self._status = status
         self._departure_date = departure_date
