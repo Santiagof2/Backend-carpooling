@@ -9,6 +9,7 @@ init_db(app)
 
 # Registrar el Blueprint de usuarios
 app.register_blueprint(user_bp)
+app.register_blueprint(driver_bp)
 app.register_blueprint(address_bp)
 app.register_blueprint(trip_join_bp)
 app.register_blueprint(trip_bp)

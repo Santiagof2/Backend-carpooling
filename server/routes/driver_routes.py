@@ -4,6 +4,28 @@ from server.models import Driver
 
 driver_bp = Blueprint('driver_bp', __name__, url_prefix='/drivers')
 
+@driver_bp.route('/test_db', methods=['GET'])
+def test_db():
+    try:
+        driver = Driver.query.first()  # Obtener el primer conductor
+        return jsonify({"status": "success", "driver": driver.to_dict() if driver else "No driver found"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500  # Devuelve el error como respuesta
+
+
+@driver_bp.route('/test_relation', methods=['GET'])
+def test_relation():
+    # Obtener el primer conductor
+    driver = Driver.query.first()  
+    if driver and driver.user:
+        return jsonify({
+            'driver_id': driver.id,
+            'user': driver.user.to_dict()  # Muestra los datos del usuario relacionado
+        }), 200
+    else:
+        return jsonify({"error": "No se encontró la relación con el usuario"}), 404
+
+
 @driver_bp.route('/', methods=['GET'])
 def get_drivers():
     drivers = Driver.query.all()

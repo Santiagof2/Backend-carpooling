@@ -1,16 +1,12 @@
 from server.db import db
-from server.models import User
+from server.models.user import User  # Asegúrate de importar el modelo User
 
 class Driver(db.Model):
-    __tablename__ = 'Driver'  # Nombre de la tabla en la base de datos
+    __tablename__ = 'Driver'
 
-    id = db.Column(db.Integer, db.ForeignKey('User.id'), primary_key=True)  # Relaciona con la tabla 'User'
-
-    # Relación con el modelo 'User'
-    user = db.relationship('User', backref='driver', lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), primary_key=True)
+    
+    user = db.relationship('User', backref='driver')  # Relación con el modelo User
 
     def to_dict(self):
-        return {
-            'id': self.id,
-            'user': self.user.to_dict()  # Puedes acceder a la información del usuario
-        }
+        return self.user.to_dict() if self.user else None
