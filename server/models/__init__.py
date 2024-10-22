@@ -8,4 +8,4 @@ from server.models.vehicle_driver import Vehicle_Driver
 from server.models.trip import Trip
 from server.models.passenger_trip import passengerTrip
 
-__all__ = ['Address', 'City', 'Province', 'User', 'Driver', 'passenger', 'Vehicle', 'Vehicle_Driver', 'Trip', 'passengerTrip', 'Message', 'Vehicle_Driver']
+__all__ = ['Address', 'City', 'Province', 'User', 'Driver', 'Passenger', 'Vehicle', 'Vehicle_Driver', 'Trip', 'passengerTrip', 'Message', 'Vehicle_Driver']
