@@ -25,6 +25,46 @@ def get_trip_driver(id):
     result = trip.vehicle_driver.driver.to_dict()
     return jsonify(result)
 
+# Crear un viaje
+@trip_bp.route('/', methods=['POST'])
+def create_trip():
+    data = request.get_json()
+
+    # Validar los datos necesarios
+    if not data or not all(key in data for key in ['departure_date', 'departure_time', 'available_seats', 'seat_price', 'departure_address_id', 'arrival_address_id', 'vehicle_driver_id']):
+        return jsonify({'message': 'Missing required fields'}), 400
+    
+    try:
+
+        # Obtener la fecha y hora actual
+        now_utc = datetime.now()
+        now_string = now_utc.strftime('%Y-%m-%d %H:%M:%S')
+
+        # Formatear la fecha y hora de salida
+        fromated_departure_date = datetime.strptime(data['departure_date'], '%Y-%m-%d')
+        formated_departure_time = datetime.strptime(data['departure_time'], '%H:%M:%S').time()
+        
+
+        # Crear un nuevo viaje
+        new_trip = Trip(
+            departure_date=fromated_departure_date,
+            departure_time=formated_departure_time,
+            available_seats=data['available_seats'],
+            seat_price=data['seat_price'],
+            creation_timestamp=now_string,
+            departure_address_id=data['departure_address_id'],
+            arrival_address_id=data['arrival_address_id'],
+            vehicle_driver_id=data['vehicle_driver_id']
+        )
+
+        # Agregar el nuevo viaje a la base de datos
+        db.session.add(new_trip)
+        db.session.commit()
+        return jsonify(new_trip.to_dict()), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error creating trip', 'error': str(e)}), 500
+
 # # cargar un viaje
 # @trip_bp.route('/', methods=['POST'])
 # def create_trip():
