@@ -19,56 +19,11 @@ def get_trip(id):
         return jsonify({'message': 'Trip not found'}), 404
     return jsonify(trip.to_dict())
 
-# #esta funcion no corresponde a esta BP.
-# def get_address(trip_address, addresses: list):
-#     for address in addresses:
-#         if address == trip_address:
-#             return address
-#     return jsonify({'error': 'Direccion no encontrada'}), 404
-
-# def get_vehicle_driver_by_id(vehicle_driver_id):
-#     for vehicle_driver in db.vehicle_drivers:
-#         if vehicle_driver._id == vehicle_driver_id:
-#             vehicle_driver = vehicle_driver
-#             return vehicle_driver
-
-# def get_driver_by_vehicle(vehicle_driver):
-#     for vehicle_driver in db.vehicle_drivers:
-#         if vehicle_driver == vehicle_driver:
-#             driver = get_driver_from_vehicle(vehicle_driver._driver)
-#             return driver
-#     return jsonify({'error': 'Conductor no encontrado'}), 404
-
-# def get_driver_from_vehicle(_driver):
-#     for driver in db.drivers:
-#         if driver == _driver:
-#             return get_user_by_driver(driver.user)
-#     return jsonify({'error': 'Conductor no encontrado'}), 404
-
-# def get_user_by_driver(_user):
-#     for user in db.users:
-#         if user == _user:
-#             return user
-#     return jsonify({'error': 'Usuario no encontrado'}), 404
-
-# def get_vehicle_by_driver(vehicle_driver_id):
-#     for vehicle_driver in db.vehicle_drivers:
-#         if vehicle_driver == vehicle_driver_id:
-#             vehicle = get_vehicle_from_vehicle_driver(vehicle_driver._vehicle)
-#             return vehicle
-#     return jsonify({'error': 'Vehiculo no encontrado'}), 404
-
-# def get_vehicle_from_vehicle_driver(_vehicle):
-#     for vehicle in db.vehicles:
-#         if vehicle == _vehicle:
-#             return vehicle
-#     return jsonify({'error': 'Vehiculo no encontrado'}), 404
-
-# # listar todos los viajes
-# @trip_bp.route('/', methods=['GET'])
-# def get_trips():
-#     list_trips = db.trips
-#     return jsonify([trip.to_dict() for trip in list_trips]), 200
+@trip_bp.route('/<int:id>/driver', methods=['GET'])
+def get_trip_driver(id):
+    trip = Trip.query.get(id)
+    result = trip.vehicle_driver.driver.to_dict()
+    return jsonify(result)
 
 # # cargar un viaje
 # @trip_bp.route('/', methods=['POST'])
@@ -131,15 +86,6 @@ def get_trip(id):
 
 #     db.trips.append(new_trip)
 #     return {'message': 'Trip created successfully.'}, 200
-
-# #Obtener viaje por id
-# @trip_bp.route('/<int:id>', methods=['GET'])
-# def get_trip(id):
-#     trip = get_trip_por_id(id, db.trips)
-#     if not trip: return jsonify({'error': 'Trip not found'}), 404
-#     print(trip)
-#     return trip.to_dict(), 200
-
 
 # def get_or_add_address(province_name:str, city_name:str, street:str, number:int):
 #     for prov in db.province:
