@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "97614aed-bbf1-40ab-b185-53f3cf07bc47",
+		"_postman_id": "f90df55e-da2b-43c4-bffd-af2366732a71",
 		"name": "Carpooling DS",
 		"description": "Colección para consumir la API de Carpooling DS",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "26225413"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34932983"
 	},
 	"item": [
 		{
@@ -15,15 +15,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{base_url}}/users",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users"
-							]
-						}
+						"url": "{{base_url}}/users"
 					},
 					"response": []
 				},
@@ -65,15 +57,7 @@
 							"mode": "raw",
 							"raw": "{\n    \"nombre\": \"Manuel\",\n    \"apellido\": \"González\",\n    \"password\": \"manuel123\",\n    \"email\": \"manuel.gonzalez@example.com\",\n    \"username\": \"manuelgonzalez\",\n    \"validacionMail\": 1\n}"
 						},
-						"url": {
-							"raw": "{{base_url}}/users",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users"
-							]
-						}
+						"url": "{{base_url}}/users"
 					},
 					"response": []
 				},
@@ -192,15 +176,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{base_url}}/trip",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"trip"
-							]
-						}
+						"url": "{{base_url}}/trip"
 					},
 					"response": []
 				},
@@ -218,15 +194,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{base_url}}/trip_join",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"trip_join"
-							]
-						}
+						"url": "{{base_url}}/trip_join"
 					},
 					"response": []
 				},
@@ -244,15 +212,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{base_url}}/trip",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"trip"
-							]
-						}
+						"url": "{{base_url}}/trip"
 					},
 					"response": []
 				},
@@ -435,16 +395,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{base_url}}/auth/login",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"auth",
-								"login"
-							]
-						}
+						"url": "{{base_url}}/auth/login"
 					},
 					"response": []
 				}
@@ -467,16 +418,72 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{base_url}}/role/select_role",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"role",
-								"select_role"
-							]
-						}
+						"url": "{{base_url}}/role/select_role"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Send message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":1,\r\n    \"trip_id\":2,\r\n    \"message\": \"un mensaje de algun piscuí con id 1 en el chat del viaje 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/messages"
+					},
+					"response": []
+				},
+				{
+					"name": "Get messages by trip_id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/messages/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all messages",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/messages"
 					},
 					"response": []
 				}
