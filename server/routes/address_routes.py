@@ -5,6 +5,7 @@ from server.db import db
 
 address_bp = Blueprint('address_bp', __name__, url_prefix='/addresses')
 
+# Obtener todas las direcciones
 @address_bp.route('/', methods=['GET'])
 def get_address():
     addresses = Address.query.all()

@@ -4,6 +4,7 @@ from server.models import Vehicle_Driver
 
 vehicle_driver_bp = Blueprint('vehicle_driver_bp', __name__, url_prefix='/vehicle_drivers')
 
+# Obtener todos los Vehicle_drivers
 @vehicle_driver_bp.route('/', methods=['GET'])
 def get_vehicle_drivers():
     vehicle_drivers = Vehicle_Driver.query.all()

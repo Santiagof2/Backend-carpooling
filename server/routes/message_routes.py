@@ -62,6 +62,7 @@ def create_message():
         db.session.rollback()  # Hacer rollback si hay un error
         return jsonify({'message': 'Error creating message', 'error': str(e)}), 500
 
+# Eliminar un mensaje por id
 @message_bp.route('/<int:id>', methods=['DELETE']) # delete a message by id
 def delete_message(id):
     message = Message.query.get(id)

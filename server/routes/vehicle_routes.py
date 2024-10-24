@@ -6,7 +6,7 @@ from server.models import Vehicle, Vehicle_Driver
 
 vehicle_bp = Blueprint('vehicle_bp', __name__, url_prefix='/vehicles')
 
-# listar todos los vehiculos
+# Obtener todos los vehiculos
 @vehicle_bp.route('/', methods=['GET'])
 def get_vehicles():
     vehicles = Vehicle.query.all()

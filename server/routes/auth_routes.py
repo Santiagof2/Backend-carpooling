@@ -4,7 +4,7 @@ from server.db import db
 
 auth_bp = Blueprint('auth_bp', __name__, url_prefix='/auth')
 
-
+# Iniciar sesión
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()

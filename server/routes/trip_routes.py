@@ -6,12 +6,14 @@ from server.db import db
 
 trip_bp = Blueprint('trip_bp', __name__, url_prefix='/trips')
 
+# Obtener todos los viajes
 @trip_bp.route('/', methods=['GET'])
 def get_trips():
     trips = Trip.query.all()
     result = [trip.to_dict() for trip in trips]
     return jsonify(result)
 
+# Obtener un viaje por ID
 @trip_bp.route('/<int:id>', methods=['GET'])
 def get_trip(id):
     trip = Trip.query.get(id)
@@ -19,6 +21,7 @@ def get_trip(id):
         return jsonify({'message': 'Trip not found'}), 404
     return jsonify(trip.to_dict())
 
+# Obtener conductor de un viaje
 @trip_bp.route('/<int:id>/driver', methods=['GET'])
 def get_trip_driver(id):
     trip = Trip.query.get(id)

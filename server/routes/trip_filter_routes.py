@@ -4,8 +4,6 @@ import requests #New
 from server.db import db
 from server.models import Trip
 
-
-
 # Función para obtener coordenadas usando Nominatim (OpenStreetMap)
 def get_coordinates(street, number, city, province):
     # Construir la dirección completa

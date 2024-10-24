@@ -5,6 +5,7 @@ from server.models import passengerTrip
 
 passenger_trip_bp = Blueprint('passenger_trip_bp', __name__, url_prefix='/passenger_trips')
 
+# Obtener todos los PassengerTrips
 @passenger_trip_bp.route('/', methods=['GET'])
 def get_passenger_trips():
     passenger_trips = passengerTrip.query.all()

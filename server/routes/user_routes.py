@@ -79,6 +79,7 @@ def update_user(id):
         db.session.rollback()
         return jsonify({'message': 'Error updating user', 'error': str(e)}),
 
+# Eliminar un usuario
 @user_bp.route('/<int:id>', methods=['DELETE'])
 def delete_user(id):
     # Buscar el usuario en la base de datos por ID
