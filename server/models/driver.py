@@ -1,5 +1,4 @@
 from server.db import db
-from server.models.user import User  # Asegúrate de importar el modelo User
 
 class Driver(db.Model):
     __tablename__ = 'Driver'

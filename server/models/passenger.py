@@ -1,5 +1,4 @@
 from server.db import db
-from server.models import User
 
 class Passenger(db.Model):
     __tablename__ = 'Passenger'

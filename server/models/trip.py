@@ -1,6 +1,4 @@
 from server.db import db
-from server.models.vehicle_driver import Vehicle_Driver
-from server.models.address import Address
 
 class Trip(db.Model):
     __tablename__ = 'Trip'

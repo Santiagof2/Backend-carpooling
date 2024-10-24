@@ -1,6 +1,4 @@
 from server.db import db
-from server.models.vehicle import Vehicle
-from server.models.driver import Driver
 
 class Vehicle_Driver(db.Model):
     __tablename__ = 'Vehicle_Driver'

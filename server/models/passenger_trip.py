@@ -1,6 +1,4 @@
 from server.db import db
-from server.models.passenger import Passenger
-from server.models.trip import Trip
 
 class passengerTrip(db.Model):
     __tablename__ = 'Passenger_Trip'
