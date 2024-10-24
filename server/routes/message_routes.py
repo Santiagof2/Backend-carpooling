@@ -1,49 +1,44 @@
-from datetime import datetime
 from flask import Blueprint, jsonify, request
 from server.db import db
 from server.models import Message
+from server.utils.functions import get_datetime_today
 
 message_bp = Blueprint('message_bp', __name__, url_prefix='/messages')
 
-
-# Obtener todos los mensajes
+# get all messages
 @message_bp.route('/', methods=['GET'])
 def get_messages():
     messages = Message.query.all()
     result = [message.to_dict() for message in messages]
     return jsonify(result)
 
-# Obtener un mensaje por id_trip
+# get messages by trip_id
 @message_bp.route('/<int:id>', methods=['GET'])
 def get_messages_by_id_trip(id):
-    messages = Message.query.filter_by(id_trip=id).all()
+    messages = Message.query.filter_by(trip_id=id).all()
     if messages is None:
         return jsonify({'message': 'messages from trip not found '}), 404
     result = [message.to_dict() for message in messages]
     return jsonify(result)
 
-
+# create a message
 @message_bp.route('/', methods=['POST'])
 def create_message():
     data = request.get_json()
-
     # Validar los datos
-    if not data or not all(key in data for key in ['id_trip', 'message']):
+    if not data or not all(key in data for key in ['trip_id', 'message', 'user_id']):
         return jsonify({'message': 'Missing required fields'}), 400
 
-    now_utc = datetime.utcnow()
-    now_string = now_utc.strftime('%Y-%m-%d %H:%M:%S') 
+    now_string = get_datetime_today()
     # Crear un nuevo mensaje
     new_message = Message(
-        id_trip=data['id_trip'],
-        id_user=data.get('id_user', None),
+        trip_id=data['trip_id'],
+        user_id=data.get('user_id', None),
         is_system=data.get('is_system', None),
         message=data['message'],
-        created_at = now_string,     
+        created_at = now_string     
     )
-
     try:
-        # Agregar mensaje a la base de datos
         db.session.add(new_message)
         db.session.commit()
         return jsonify(new_message.to_dict()), 201  # Retorna el mensaje creado y un código 201 de creación exitosa
@@ -51,17 +46,11 @@ def create_message():
         db.session.rollback()  # Hacer rollback si hay un error
         return jsonify({'message': 'Error creating message', 'error': str(e)}), 500
 
-
-@message_bp.route('/<int:id>', methods=['DELETE'])
+@message_bp.route('/<int:id>', methods=['DELETE']) # delete a message by id
 def delete_message(id):
-    # Buscar el usuario en la base de datos por ID
     message = Message.query.get(id)
-    
     if message is None:
         return jsonify({'error': 'message not found'}), 404
-    
-    # Eliminar el usuario de la base de datos
     db.session.delete(message)
     db.session.commit()
-
     return jsonify({'message': 'message deleted successfully.'}), 200
