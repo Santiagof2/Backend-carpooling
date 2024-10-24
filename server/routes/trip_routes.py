@@ -25,85 +25,73 @@ def get_trip_driver(id):
     result = trip.vehicle_driver.driver.to_dict()
     return jsonify(result)
 
-# # cargar un viaje
-# @trip_bp.route('/', methods=['POST'])
-# def create_trip():
-#     data = request.get_json()
+# Crear un viaje
+@trip_bp.route('/', methods=['POST'])
+def create_trip():
+    data = request.get_json()
 
-#     # Obtenemos los datos
-#     id = len(db.trips) + 1
-#     status = 'activo'
-#     departure_date = data.get('departure_date')
-#     departure_time = data.get('departure_time')
-#     available_seats = data.get('available_seats')
-#     seat_price = data.get('seat_price')
-#     creation_timestamp = datetime.now().strftime('%Y-%m-%d')
-#     vehicle_driver_id = data.get('vehicle_driver_id')
-#     departure_address_str = data.get('departure_address', '')
-#     arrival_address_str = data.get('arrival_address', '')
-
-#     if not departure_address_str: return {'error': 'departure_address missing.'}, 400
-#     split_address = departure_address_str.split(', ')
-#     departure_address = get_or_add_address(split_address[0], split_address[1], split_address[2], int(split_address[3]))
+    # Validar los datos necesarios
+    if not data or not all(key in data for key in ['departure_date', 'departure_time', 'available_seats', 'seat_price', 'departure_address_id', 'arrival_address_id', 'vehicle_driver_id']):
+        return jsonify({'message': 'Missing required fields'}), 400
     
-#     if not arrival_address_str: return {'error': 'arrival_address missing.'}, 400
-#     split_address = arrival_address_str.split(', ')
-#     arrival_address = get_or_add_address(split_address[0], split_address[1], split_address[2], int(split_address[3]))
+    try:
 
-#     vehicle_driver = get_vehicle_driver_by_id(vehicle_driver_id)
-#     if not vehicle_driver: return {'error': 'vehicle_driver_id not found'}, 400
+        # Obtener la fecha y hora actual
+        now_utc = datetime.now()
+        now_string = now_utc.strftime('%Y-%m-%d %H:%M:%S')
 
-#     new_trip = Trip(id, status, departure_date, departure_time, available_seats, seat_price, creation_timestamp, departure_address, arrival_address, vehicle_driver)
+        # Formatear la fecha y hora de salida
+        fromated_departure_date = datetime.strptime(data['departure_date'], '%Y-%m-%d')
+        formated_departure_time = datetime.strptime(data['departure_time'], '%H:%M:%S').time()
+        
+
+        # Crear un nuevo viaje
+        new_trip = Trip(
+            departure_date=fromated_departure_date,
+            departure_time=formated_departure_time,
+            available_seats=data['available_seats'],
+            seat_price=data['seat_price'],
+            creation_timestamp=now_string,
+            departure_address_id=data['departure_address_id'],
+            arrival_address_id=data['arrival_address_id'],
+            vehicle_driver_id=data['vehicle_driver_id']
+        )
+
+        # Agregar el nuevo viaje a la base de datos
+        db.session.add(new_trip)
+        db.session.commit()
+        return jsonify(new_trip.to_dict()), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error creating trip', 'error': str(e)}), 500
+
+# Actualizar un viaje
+@trip_bp.route('/<int:id>', methods=['PUT'])
+def update_trip(id):
+
+    # Buscar el viaje en la base de datos
+    trip = Trip.query.get(id)
+
+    if trip is None:
+        return jsonify({'error': 'Trip not found'}), 404
     
-#     db.trips.append(new_trip)
-#     return {'message': 'Trip created successfully.', 'id': new_trip._id}, 200
+    # Obtener los datos enviados en la petición
+    data = request.get_json()
 
-# #Actualizar un viaje
-# @trip_bp.route('/<int:id>', methods=['PUT'])
-# def update_trip(id):
-#     data = request.get_json()
-#     if not data: return {'error': 'No data provided'}, 400
-#     status = data.get('status')
-#     departure_date = data.get('departure_date')
-#     departure_time = data.get('departure_time')
-#     available_seats = data.get('available_seats')
-#     seat_price = data.get('seat_price')
-#     creation_timestamp = data.get('creation_timestamp')
-#     deaparture_address_id = data.get('deaparture_address_id')
-#     arrival_address_id = data.get('arrival_address_id')
-#     vehicle_driver_id = data.get('vehicle_driver_id')
+    # Validar que al menos un dato haya sido proporcionado
+    if not data:
+        return jsonify({'message': 'No data provided'}), 400
+    
+    try:
+        # Actualizar solo los campos presentes en la petición
+        for (key, value) in data.items():
+            if hasattr(trip, key):
+                setattr(trip, key, value)
 
-#     deaparture_address = get_address(deaparture_address_id)
-#     if not deaparture_address: return {'error': 'deaparture_address_id not found'}, 400
-
-#     arrival_address = get_address(arrival_address_id)
-#     if not arrival_address: return {'error': 'arrival_address_id not found'}, 400
-
-#     vehicle_driver = get_vehicle_driver_by_id(vehicle_driver_id)
-#     if not vehicle_driver: return {'error': 'vehicle_driver_id not found'}, 400
-
-#     new_trip = Trip(id, status, departure_date, departure_time, available_seats, seat_price, creation_timestamp, deaparture_address, arrival_address, vehicle_driver)
-
-#     db.trips.append(new_trip)
-#     return {'message': 'Trip created successfully.'}, 200
-
-# def get_or_add_address(province_name:str, city_name:str, street:str, number:int):
-#     for prov in db.province:
-#         if prov._name == province_name:
-#             province = prov
-#         else:
-#             province = Province(len(db.province) + 1, province_name)
-#             db.province.append(province)
-#     for city in db.cities:
-#         if city._name == city_name:
-#             city = city
-#         else:
-#             city = City(len(db.cities) + 1, city_name, province)
-#             db.cities.append(city)
-#     for addres in db.addresses:
-#         if addres._street == street and addres._number == number:
-#             address = addres
-#         else:
-#             address = Address(len(db.addresses) + 1, street, number, city)
-#             db.addresses.append(address)
-#     return address
+        # Guardar los cambios en la base de datos
+        db.session.commit()
+        return jsonify(trip.to_dict()), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error updating trip', 'error': str(e)}), 500

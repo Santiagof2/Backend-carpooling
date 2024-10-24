@@ -11,3 +11,4 @@ flask_sqlalchemy
 pymysql
 requests
 geopy
+flask_socketio

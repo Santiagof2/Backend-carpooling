@@ -30,7 +30,7 @@ def create_user():
         return jsonify({'message': 'Missing required fields'}), 400
 
 
-    now_utc = datetime.utcnow()
+    now_utc = datetime.now()
     now_string = now_utc.strftime('%Y-%m-%d %H:%M:%S') 
     # Crear un nuevo usuario
     new_user = User(

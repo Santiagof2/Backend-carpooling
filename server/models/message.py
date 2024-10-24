@@ -6,7 +6,7 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(1000), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
-    trip_id = db.Column(db.Integer, nullable=False) 
+    trip_id = db.Column(db.Integer, db.ForeignKey('Trip.id'), nullable=False) 
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'), default=None, nullable=True) 
     is_system = db.Column(db.Boolean, default=False, nullable=True)
 
@@ -19,3 +19,4 @@ class Message(db.Model):
             'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             'is_system': self.is_system,
         }
+    user = db.relationship('User', backref='messages')
