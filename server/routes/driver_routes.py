@@ -1,14 +1,39 @@
 from flask import Blueprint, jsonify, request
 from server.db import db
-from server.models import Driver
+from server.models import Driver, Vehicle, Vehicle_Driver
+from server.utils.functions import get_user
 
 driver_bp = Blueprint('driver_bp', __name__, url_prefix='/drivers')
 
+# Obtener todos los conductores
 @driver_bp.route('/', methods=['GET'])
 def get_drivers():
     drivers = Driver.query.all()
     result =[driver.to_dict() for driver in drivers]
     return jsonify(result)
+
+# Obtener vehiculos de un conductor
+@driver_bp.route('/<int:id>/vehicles', methods=['GET'])
+def get_driver_vehicles(id):
+    # Verificar si el conductor existe
+    driver = get_user(id)
+    if driver is None:
+        return jsonify({'error': 'Conductor no encontrado'}), 404
+
+    # Obtener todas las entradas en Vehicle_driver que correspondan al conductor
+    vehicle_driver_entries = Vehicle_Driver.query.filter_by(driver_id=id).all()
+
+    if not vehicle_driver_entries:
+        return jsonify({'message': 'Este conductor no tiene vehículos asignados'}), 404
+
+    # Obtener todos los vehículos asociados a esas entradas
+    vehicles = []
+    for entry in vehicle_driver_entries:
+        vehicle = Vehicle.query.get(entry.vehicle_id)
+        if vehicle:
+            vehicles.append(vehicle.to_dict())  # Asumimos que el modelo Vehicle tiene un método to_dict()
+
+    return jsonify({'driver_id': id, 'vehicles': vehicles}), 200
 
 @driver_bp.route('/trips/<int:trip_id>/requests', methods=['GET'])
 def list_passenger_requests(trip_id):
