@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from server.db import db
 from server.models import Driver, Vehicle, Vehicle_Driver
-from server.utils.functions import get_user
+from server.utils.functions import get_user, get_driver
 
 driver_bp = Blueprint('driver_bp', __name__, url_prefix='/drivers')
 
@@ -14,17 +14,15 @@ def get_drivers():
 
 # Obtener un conductor por ID
 @driver_bp.route('/<int:id>', methods=['GET'])
-def get_driver(id):
-    driver = Driver.query.get(id)
-    if driver is None:
-        return jsonify({'error': 'Conductor no encontrado'}), 404
+def get_driver_route(id):
+    driver = get_driver(id)
     return jsonify(driver.to_dict())
 
 # Obtener vehiculos de un conductor
 @driver_bp.route('/<int:id>/vehicles', methods=['GET'])
 def get_driver_vehicles(id):
     # Verificar si el conductor existe
-    driver = get_user(id)
+    driver = get_driver(id)
     if driver is None:
         return jsonify({'error': 'Conductor no encontrado'}), 404
 
