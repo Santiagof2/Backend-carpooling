@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from server.db import db
 from server.models import Message
+from server.models.user import User
 from server.utils.functions import get_datetime_today
 
 message_bp = Blueprint('message_bp', __name__, url_prefix='/messages')
@@ -15,10 +16,25 @@ def get_messages():
 # get messages by trip_id
 @message_bp.route('/<int:id>', methods=['GET'])
 def get_messages_by_id_trip(id):
-    messages = Message.query.filter_by(trip_id=id).all()
+    messages = (
+        db.session.query(Message)
+        .join(User, Message.user_id == User.id)
+        .filter(Message.trip_id == id)
+        .all()
+    )
     if messages is None:
         return jsonify({'message': 'messages from trip not found '}), 404
-    result = [message.to_dict() for message in messages]
+    result = [
+        {
+            'id_user': message.user_id,
+            'username': message.user.username,
+            'room': message.trip_id,
+            'message': message.message,
+            'isSystem': message.is_system,
+            'sendedTime': message.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        for message in messages
+    ]
     return jsonify(result)
 
 # create a message

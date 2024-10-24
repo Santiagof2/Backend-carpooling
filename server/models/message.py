@@ -19,3 +19,4 @@ class Message(db.Model):
             'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             'is_system': self.is_system,
         }
+    user = db.relationship('User', backref='messages')
