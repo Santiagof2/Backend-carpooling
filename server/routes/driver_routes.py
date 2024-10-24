@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from server.db import db
 from server.models import Driver, Vehicle, Vehicle_Driver
-from server.utils.functions import get_user, get_driver
+from server.utils.functions import get_driver
 
 driver_bp = Blueprint('driver_bp', __name__, url_prefix='/drivers')
 

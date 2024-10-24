@@ -2,7 +2,8 @@ from datetime import datetime
 from flask import Blueprint, jsonify, request
 from server.models import Trip
 from server.db import db
-from server.models import Vehicle, Vehicle_Driver
+from server.models import Vehicle, Vehicle_Driver, Driver
+from server.utils.functions import get_driver
 
 vehicle_bp = Blueprint('vehicle_bp', __name__, url_prefix='/vehicles')
 
@@ -25,45 +26,42 @@ def get_vehicle(id):
 @vehicle_bp.route('/', methods=['POST'])
 def create_vehicle():
     data = request.get_json()
-    
-    if not license_plate or not all(key in data for key in ['license_plate', 'brand', 'model', 'color', 'year']):
-        return jsonify({'error': 'Faltan datos'}), 400
 
-    # Obtenemos los datos
-    license_plate = data.get('license_plate')
-    brand = data.get('brand')
-    model = data.get('model')
-    color = data.get('color')
-    year  = data.get('year')
-    
-    driver= get_driver(user_id,db.users)
-    if not driver:
-        return jsonify({'error': 'Usuario no encontrado'}), 404
+    # Validar los datos necesarios
+    if not data or not all(key in data for key in ['license_plate', 'brand', 'model', 'color', 'year', 'driver_id']):
+        return jsonify({'mensaje': 'Faltan campos requeridos'}), 400
 
-    # Creción del vehiculo
-    vehicle = Vehicle(
-        len(db.vehicles) + 1,
-        license_plate,
-        brand,
-        model,
-        color,
-        year   
+    # Verificar si el conductor existe
+    driver = get_driver(data['driver_id'])
+
+    # Crear un nuevo vehículo
+    new_vehicle = Vehicle(
+        license_plate=data['license_plate'],
+        brand=data['brand'],
+        model=data['model'],
+        color=data['color'],
+        year=data['year']
     )
-    db.vehicles.append(vehicle)
 
-    # Crear la relación entre el usuario y el vehículo
-    vehicle_driver = Vehicle_Driver(
-        len(db.vehicle_drivers) + 1,
-        driver,
-        vehicle
-    )
-    db.vehicle_drivers.append(vehicle_driver)
+    try:
+        # Agregar el nuevo vehículo a la base de datos
+        db.session.add(new_vehicle)
+        db.session.commit()
 
-    return jsonify({
-        'mensaje': 'Vehículo creado correctamente y asociado al usuario.',
-        'vehicle_id': vehicle._id,
-        'vehicle_driver_id': vehicle_driver.get_id()
-    }), 201    
+        # Crear una entrada en la tabla Vehicle_Driver
+        new_vehicle_driver = Vehicle_Driver(
+            vehicle_id=new_vehicle.id,
+            driver_id=driver.user_id
+        )
+
+        db.session.add(new_vehicle_driver)
+        db.session.commit()
+
+        return jsonify(new_vehicle.to_dict()), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'mensaje': 'Error creando vehículo', 'error': str(e)}), 500
    
     
 # Actualizar un Vehiculo existente
