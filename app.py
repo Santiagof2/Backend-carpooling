@@ -19,6 +19,7 @@ app.register_blueprint(vehicle_bp)
 app.register_blueprint(message_bp)
 app.register_blueprint(vehicle_driver_bp)
 app.register_blueprint(passenger_trip_bp)
+app.register_blueprint(trip_filter_bp)
 
 if __name__ == '__main__':
     app.run(debug=True)
