@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import Blueprint, jsonify, request
 from server.db import db
 from server.models import User
+from server.utils.functions import get_user
 
 user_bp = Blueprint('user_bp', __name__, url_prefix='/users')
 
@@ -14,10 +15,8 @@ def get_users():
 
 # Obtener un usuario por ID
 @user_bp.route('/<int:id>', methods=['GET'])
-def get_user(id):
-    user = User.query.get(id)
-    if user is None:
-        return jsonify({'message': 'User not found'}), 404
+def get_user_route(id):
+    user = get_user(id)
     return jsonify(user.to_dict())
 
 
