@@ -43,6 +43,15 @@ def get_driver_vehicles(id):
 
     return jsonify({'driver_id': id, 'vehicles': vehicles}), 200
 
+# Crear un conductor
+@driver_bp.route('/', methods=['POST'])
+def create_driver():
+    data = request.json
+    driver = Driver(user_id=data['user_id'])
+    db.session.add(driver)
+    db.session.commit()
+    return jsonify(driver.to_dict()), 201
+
 @driver_bp.route('/trips/<int:trip_id>/requests', methods=['GET'])
 def list_passenger_requests(trip_id):
     filtered_requests = [r.to_dict() for r in db.trip_requests if r._trip._id == trip_id and r._status == 'pending']
