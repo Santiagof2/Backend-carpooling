@@ -78,18 +78,3 @@ def update_user(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'Error updating user', 'error': str(e)}),
-
-# Eliminar un usuario
-@user_bp.route('/<int:id>', methods=['DELETE'])
-def delete_user(id):
-    # Buscar el usuario en la base de datos por ID
-    usuario = User.query.get(id)
-    
-    if usuario is None:
-        return jsonify({'error': 'User not found'}), 404
-    
-    # Eliminar el usuario de la base de datos
-    db.session.delete(usuario)
-    db.session.commit()
-
-    return jsonify({'message': 'User deleted successfully.'}), 200
