@@ -13,7 +13,7 @@ def get_vehicles():
     result = [vehicle.to_dict() for vehicle in vehicles]
     return jsonify(result)
     
-#Obtener vehiculo por condutor ID
+# Obtener vehiculo por ID
 @vehicle_bp.route('/<int:id>', methods=['GET'])
 def get_vehicle(id):
     vehicle = Vehicle.query.get(id)
@@ -21,7 +21,7 @@ def get_vehicle(id):
         return jsonify({'error': 'Vehiculo no encontrado'}), 404
     return jsonify(vehicle.to_dict())
 
-#Crear Vehiculo
+# Crear Vehiculo
 @vehicle_bp.route('/', methods=['POST'])
 def create_vehicle():
     data = request.get_json()
