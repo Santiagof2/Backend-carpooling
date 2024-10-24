@@ -12,6 +12,14 @@ def get_drivers():
     result =[driver.to_dict() for driver in drivers]
     return jsonify(result)
 
+# Obtener un conductor por ID
+@driver_bp.route('/<int:id>', methods=['GET'])
+def get_driver(id):
+    driver = Driver.query.get(id)
+    if driver is None:
+        return jsonify({'error': 'Conductor no encontrado'}), 404
+    return jsonify(driver.to_dict())
+
 # Obtener vehiculos de un conductor
 @driver_bp.route('/<int:id>/vehicles', methods=['GET'])
 def get_driver_vehicles(id):
