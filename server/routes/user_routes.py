@@ -19,7 +19,7 @@ def get_user_route(id):
     user = get_user(id)
     return jsonify(user.to_dict())
 
-
+# Crear un nuevo usuario
 @user_bp.route('/', methods=['POST'])
 def create_user():
     data = request.get_json()
@@ -27,7 +27,6 @@ def create_user():
     # Validar los datos necesarios
     if not data or not all(key in data for key in ['first_name', 'last_name', 'password', 'email', 'username']):
         return jsonify({'message': 'Missing required fields'}), 400
-
 
     now_utc = datetime.now()
     now_string = now_utc.strftime('%Y-%m-%d %H:%M:%S') 
@@ -54,27 +53,31 @@ def create_user():
 # Actualizar un usuario existente
 @user_bp.route('/<int:id>', methods=['PUT'])
 def update_user(id):
+
     # Buscar el usuario en la base de datos por ID
-    usuario = User.query.get(id)
+    user = User.query.get(id)
     
-    if usuario is None:
+    if user is None:
         return jsonify({'error': 'User not found'}), 404
     
     # Obtener los datos enviados en la petición
     data = request.get_json()
     
-    # Actualizar los campos del usuario si están presentes en la petición
-    usuario.first_name = data.get('first_name', usuario.first_name)
-    usuario.last_name = data.get('last_name', usuario.last_name)
-    usuario.email = data.get('email', usuario.email)
-    usuario.username = data.get('username', usuario.username)
-    usuario.password = data.get('password', usuario.password)
-    usuario.email_validation = data.get('email_validation', usuario.email_validation)
+    if not data:
+        return jsonify({'message': 'No data provided to update user'}), 400
 
-    # Guardar los cambios en la base de datos
-    db.session.commit()
+    try:
+        for (key, value) in data.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
 
-    return jsonify({'message': 'User updated successfully.'}), 200
+        # Guardar los cambios en la base de datos
+        db.session.commit()
+        return jsonify(user.to_dict()), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error updating user', 'error': str(e)}),
 
 @user_bp.route('/<int:id>', methods=['DELETE'])
 def delete_user(id):
