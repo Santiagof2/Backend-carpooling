@@ -18,4 +18,4 @@ def login():
 
     if data['password'] != user.password: return jsonify({'error': 'Usuario o contraseña incorrectos.'}), 400
 
-    return jsonify({user.to_dict()}), 200
+    return jsonify(user.to_dict()), 200
