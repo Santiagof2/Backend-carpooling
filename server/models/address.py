@@ -1,7 +1,7 @@
 from server.db import db  # Importar el objeto db desde db.py
 
-class Province(db.Model):
-    __tablename__ = 'Province'
+class Principal_Subdivision(db.Model):
+    __tablename__ = 'Principal_Subdivision'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(45), nullable=False)
@@ -11,20 +11,20 @@ class Province(db.Model):
             'name': self.name
         }
 
-class City(db.Model):
-    __tablename__ = 'City'
+class Locality(db.Model):
+    __tablename__ = 'Locality'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(45), nullable=False)
-    province_id = db.Column(db.Integer, db.ForeignKey('Province.id'), nullable=False)
+    principal_subdivision_id = db.Column(db.Integer, db.ForeignKey('Principal_Subdivision.id'), nullable=False)
 
-    province = db.relationship('Province', backref='City')
+    principal_subdivision = db.relationship('Principal_Subdivision', backref='Locality')
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
-            'province': self.province.to_dict()
+            'principal_subdivision': self.principal_subdivision.to_dict()
         }
 
 class Address(db.Model):
@@ -33,14 +33,14 @@ class Address(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     street = db.Column(db.String(45), nullable=False)
     number = db.Column(db.Integer, nullable=False)
-    city_id = db.Column(db.Integer, db.ForeignKey('City.id'), nullable=False)
+    locality_id = db.Column(db.Integer, db.ForeignKey('Locality.id'), nullable=False)
 
-    city = db.relationship('City', backref='Address')
+    locality = db.relationship('Locality', backref='Address')
 
     def to_dict(self):
         return {
             'id': self.id,
             'street': self.street,
             'number': self.number,
-            'city': self.city.to_dict()
+            'locality': self.locality.to_dict()
         }

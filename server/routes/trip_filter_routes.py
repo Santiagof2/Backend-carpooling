@@ -5,9 +5,9 @@ from server.db import db
 from server.models import Trip
 
 # Función para obtener coordenadas usando Nominatim (OpenStreetMap)
-def get_coordinates(street, number, city, province):
+def get_coordinates(street, number, locality, principal_subdivision):
     # Construir la dirección completa
-    address = f"{street} {number}, {city}, {province}"
+    address = f"{street} {number}, {locality}, {principal_subdivision}"
     
     base_url = "https://nominatim.openstreetmap.org/search"
     params = {
@@ -53,13 +53,13 @@ def filter_trips():
         # Obtener coordenadas del origen del viaje usando Nominatim
         origin_coords = get_coordinates(
             origin_address.street, origin_address.number,
-            origin_address.city.name, origin_address.city.province.name
+            origin_address.locality.name, origin_address.locality.principal_subdivision.name
         )
 
         # Obtener coordenadas del destino del viaje usando Nominatim
         dest_coords = get_coordinates(
             dest_address.street, dest_address.number,
-            dest_address.city.name, dest_address.city.province.name
+            dest_address.locality.name, dest_address.locality.principal_subdivision.name
         )
 
         # Si se obtienen coordenadas válidas
