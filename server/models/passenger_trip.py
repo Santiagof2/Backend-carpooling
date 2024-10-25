@@ -1,6 +1,6 @@
 from server.db import db
 
-class passengerTrip(db.Model):
+class PassengerTrip(db.Model):
     __tablename__ = 'Passenger_Trip'
     
     id = db.Column(db.Integer, primary_key=True)

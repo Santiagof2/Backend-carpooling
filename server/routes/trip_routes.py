@@ -34,7 +34,7 @@ def create_trip():
     data = request.get_json()
 
     # Validar los datos necesarios
-    if not data or not all(key in data for key in ['departure_date', 'departure_time', 'available_seats', 'seat_price', 'departure_address_id', 'arrival_address_id', 'vehicle_driver_id']):
+    if not data or not all(key in data for key in ['departure_date', 'departure_time', 'available_seats', 'seat_price', 'departure_address', 'arrival_address', 'vehicle_driver_id']):
         return jsonify({'message': 'Missing required fields'}), 400
     
     try:
@@ -55,8 +55,8 @@ def create_trip():
             available_seats=data['available_seats'],
             seat_price=data['seat_price'],
             creation_timestamp=now_string,
-            departure_address_id=data['departure_address_id'],
-            arrival_address_id=data['arrival_address_id'],
+            departure_address_id=data['departure_address'],
+            arrival_address_id=data['arrival_address'],
             vehicle_driver_id=data['vehicle_driver_id']
         )
 

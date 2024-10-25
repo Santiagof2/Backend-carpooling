@@ -6,6 +6,6 @@ from server.models.message import Message
 from server.models.vehicle import Vehicle
 from server.models.vehicle_driver import Vehicle_Driver
 from server.models.trip import Trip
-from server.models.passenger_trip import passengerTrip
+from server.models.passenger_trip import PassengerTrip
 
-__all__ = ['Address', 'City', 'Province', 'User', 'Driver', 'Passenger', 'Vehicle', 'Vehicle_Driver', 'Trip', 'passengerTrip', 'Message', 'Vehicle_Driver']
+__all__ = ['Address', 'City', 'Province', 'User', 'Driver', 'Passenger', 'Vehicle', 'Vehicle_Driver', 'Trip', 'PassengerTrip', 'Message', 'Vehicle_Driver']
