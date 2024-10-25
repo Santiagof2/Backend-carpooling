@@ -415,6 +415,39 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Actualizar un viaje",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"available_seats\": 125\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/trips/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"trips",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -571,6 +604,156 @@
 							"port": "5000",
 							"path": [
 								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Direcciones",
+			"item": [
+				{
+					"name": "Obtener todas las direcciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/addresses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Conductores",
+			"item": [
+				{
+					"name": "Obtener todos los conductores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/drivers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener conductor por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/drivers/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener vehiculos de un conductor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/drivers/:id/vehicles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers",
+								":id",
+								"vehicles"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear un conductor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 7\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/drivers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehiculos",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"license_plate\": \"JEI573\",\r\n    \"brand\": \"marcagenerica\",\r\n    \"model\": \"modelogenerico\",\r\n    \"color\": \"blanco\",\r\n    \"year\": 1890,\r\n    \"driver_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/vehicles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vehicles"
 							]
 						}
 					},
