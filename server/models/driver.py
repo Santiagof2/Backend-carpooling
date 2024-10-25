@@ -8,4 +8,7 @@ class Driver(db.Model):
     user = db.relationship('User', backref='driver')  # Relación con el modelo User
 
     def to_dict(self):
-        return self.user.to_dict() if self.user else None
+        return {
+            'user_id': self.user_id,
+            'user': self.user.to_dict(),
+        }
