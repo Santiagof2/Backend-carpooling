@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from server.db import init_db  # Configuración de la base de datos
 from server.routes import *
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
@@ -10,6 +10,15 @@ app = Flask(__name__)
 
 # Inicializar la base de datos
 init_db(app)
+
+# Error handler
+@app.errorhandler(Exception)
+def handle_exception(e):
+    response = {
+        "error": str(e),
+        "message": "Ocurrió un error en el servidor"
+    }
+    return jsonify(response), 500
 
 # Registrar el Blueprint de usuarios
 app.register_blueprint(user_bp)

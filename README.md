@@ -2,14 +2,24 @@
 # Version: 1.0
 
 ## Iniciar el proyecto
-   ```bash
-   pip install -r .\req.txt
-   ```
-   ```bash
-   py .\app.py
-   ```
+```md
+Crear archivo .env
+    Asignar:
+        DATABASE_URI = 'mysql+pymysql://pruebadb:sdklg010@mysql-pruebadb.alwaysdata.net/pruebadb_db'
+```
+```bash
+pip install -r req.txt
+```
+```bash
+py app.py
+```
 
-Coleccion de Postman en docs/
+## Información
+```md
+- Coleccion de Postman en docs/
+- Backend corriendo en remoto: dscarpooling-back.alwaysdata.net
+```
+```bash
 /users:
 {
     / GET #Retorna todos los usuarios
@@ -32,5 +42,5 @@ Coleccion de Postman en docs/
 {
     /select_role POST #modifica el rol del usuario
 }
+```
 
-Backend corriendo en remoto: [dscarpooling-back.alwaysdata.net](dscarpooling-back.alwaysdata.net)

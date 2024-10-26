@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "a711b5cc-2c9a-4815-8ea7-bef1c81978aa",
+		"_postman_id": "fb86bfe1-46b9-476c-bee9-46c127d8d421",
 		"name": "Carpooling DS",
 		"description": "Colección para consumir la API de Carpooling DS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38655010"
+		"_exporter_id": "26225413"
 	},
 	"item": [
 		{
@@ -219,12 +219,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/trip_join",
+							"raw": "{{base_url}}/trip/join",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"trip_join"
+								"trip",
+								"join"
 							]
 						}
 					},
