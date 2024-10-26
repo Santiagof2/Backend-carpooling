@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "15e9a8ad-243b-4515-9b80-84d5694f52d9",
+		"_postman_id": "a711b5cc-2c9a-4815-8ea7-bef1c81978aa",
 		"name": "Carpooling DS",
 		"description": "Colección para consumir la API de Carpooling DS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "26225413"
+		"_exporter_id": "38655010"
 	},
 	"item": [
 		{
@@ -16,12 +16,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuarios",
+							"raw": "{{base_url}}/users",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios"
+								"users"
 							]
 						}
 					},
@@ -33,18 +33,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuarios/:id",
+							"raw": "{{base_url}}/users/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios",
+								"users",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "10"
 								}
 							]
 						}
@@ -66,12 +66,12 @@
 							"raw": "{\n    \"nombre\": \"Manuel\",\n    \"apellido\": \"González\",\n    \"password\": \"manuel123\",\n    \"email\": \"manuel.gonzalez@example.com\",\n    \"username\": \"manuelgonzalez\",\n    \"validacionMail\": 1\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/usuarios",
+							"raw": "{{base_url}}/users",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios"
+								"users"
 							]
 						}
 					},
@@ -92,12 +92,12 @@
 							"raw": "{\n    \"nombre\": \"Manuel Actualizado\",\n    \"apellido\": \"González\",\n    \"email\": \"manuel.gonzalez@example.com\",\n    \"username\": \"manuelgonzalez\",\n    \"validacionMail\": 1\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/usuarios/:id",
+							"raw": "{{base_url}}/users/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios",
+								"users",
 								":id"
 							],
 							"variable": [
@@ -116,19 +116,644 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuarios/:id",
+							"raw": "{{base_url}}/users/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"usuarios",
+								"users",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "10"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Viajes",
+			"item": [
+				{
+					"name": "Obtener viaje detalle por id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/trips/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"trips",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todos los viajes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/trips",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"trips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unir Pasajero a un Viaje",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_trip\":1,\r\n    \"passenger_id\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/trip_join",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"trip_join"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear un viaje",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"departure_date\": \"2024-10-10\",\r\n    \"departure_time\": \"20:10:10\",\r\n    \"available_seats\": 4,\r\n    \"seat_price\": 134,\r\n    \"departure_address_id\": \"1\",\r\n    \"arrival_address_id\": \"1\",\r\n    \"vehicle_driver_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/trips",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"trips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Viaje (Pasajero)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"passenger_id\": 1 }"
+						},
+						"url": {
+							"raw": "{{base_url}}/passager/trips/:trip_id/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"passager",
+								"trips",
+								":trip_id",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Viaje (Conductor)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"driver_id\": 1 }"
+						},
+						"url": {
+							"raw": "{{base_url}}/driver/trips/:trip_id/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"driver",
+								"trips",
+								":trip_id",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rechazar Pasajero (Conductor)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/driver/trips/:trip_id/requests/:request_id/reject",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"driver",
+								"trips",
+								":trip_id",
+								"requests",
+								":request_id",
+								"reject"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								},
+								{
+									"key": "request_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Aceptar Pasajero (Conductor)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/driver/trips/:trip_id/requests/:request_id/accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"driver",
+								"trips",
+								":trip_id",
+								"requests",
+								":request_id",
+								"accept"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								},
+								{
+									"key": "request_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Peticiones de Pasajeros (Conductor)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/driver/trips/:trip_id/requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"driver",
+								"trips",
+								":trip_id",
+								"requests"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar un viaje",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"available_seats\": 125\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/trips/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"trips",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"manuelgonzalez\",\r\n    \"password\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Seleccionar un Rol",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 1,\r\n    \"role\": \"driver\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/role/select_role",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"role",
+								"select_role"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Send message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":1,\r\n    \"trip_id\":2,\r\n    \"message\": \"un mensaje de algun piscuí con id 1 en el chat del viaje 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get messages by trip_id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/messages/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"messages",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all messages",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Direcciones",
+			"item": [
+				{
+					"name": "Obtener todas las direcciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/addresses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Conductores",
+			"item": [
+				{
+					"name": "Obtener todos los conductores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/drivers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener conductor por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/drivers/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener vehiculos de un conductor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/drivers/:id/vehicles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers",
+								":id",
+								"vehicles"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear un conductor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 7\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/drivers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehiculos",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"license_plate\": \"JEI573\",\r\n    \"brand\": \"marcagenerica\",\r\n    \"model\": \"modelogenerico\",\r\n    \"color\": \"blanco\",\r\n    \"year\": 1890,\r\n    \"driver_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/vehicles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vehicles"
 							]
 						}
 					},
