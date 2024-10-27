@@ -20,6 +20,7 @@ def get_messages_by_id_trip(id):
         db.session.query(Message)
         .join(User, Message.user_id == User.id)
         .filter(Message.trip_id == id)
+        .order_by(Message.created_at)
         .all()
     )
     if messages is None:
