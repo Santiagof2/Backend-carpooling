@@ -12,7 +12,7 @@ class Trip(db.Model):
     departure_address_id = db.Column(db.Integer, db.ForeignKey('Address.id'), nullable=False)
     arrival_address_id = db.Column(db.Integer, db.ForeignKey('Address.id'), nullable=False)
     vehicle_driver_id = db.Column(db.Integer, db.ForeignKey('Vehicle_Driver.driver_id'), nullable=False)
-    status = db.Column(db.String(50), nullable=False, default='active') # Nuevo campo
+    status = db.Column(db.String(50), nullable=False, default='active')
 
     departure_address = db.relationship('Address', foreign_keys=[departure_address_id])
     arrival_address = db.relationship('Address', foreign_keys=[arrival_address_id])
