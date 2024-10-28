@@ -8,6 +8,7 @@ class Principal_Subdivision(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.id,
             'name': self.name
         }
 
@@ -34,6 +35,8 @@ class Address(db.Model):
     street = db.Column(db.String(45), nullable=False)
     number = db.Column(db.Integer, nullable=False)
     locality_id = db.Column(db.Integer, db.ForeignKey('Locality.id'), nullable=False)
+    longitude = db.Column(db.Double, nullable=False)
+    latitude = db.Column(db.Double, nullable=False)
 
     locality = db.relationship('Locality', backref='Address')
 
@@ -42,5 +45,7 @@ class Address(db.Model):
             'id': self.id,
             'street': self.street,
             'number': self.number,
+            'longitude': self.longitude,
+            'latitude': self.latitude,
             'locality': self.locality.to_dict()
         }
