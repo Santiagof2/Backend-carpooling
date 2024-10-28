@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "a711b5cc-2c9a-4815-8ea7-bef1c81978aa",
+		"_postman_id": "fbfadf3d-e6b1-4109-b51f-04c491f225a1",
 		"name": "Carpooling DS",
 		"description": "Colección para consumir la API de Carpooling DS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38655010"
+		"_exporter_id": "26225413"
 	},
 	"item": [
 		{
@@ -140,42 +140,6 @@
 			"name": "Viajes",
 			"item": [
 				{
-					"name": "Obtener viaje detalle por id",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/trips/:id",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"trips",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "6"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Obtener todos los viajes",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -205,13 +169,16 @@
 					"response": []
 				},
 				{
-					"name": "Unir Pasajero a un Viaje",
+					"name": "Obtener viaje detalle por id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id_trip\":1,\r\n    \"passenger_id\":2\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -219,12 +186,46 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/trip_join",
+							"raw": "{{base_url}}/trips/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"trip_join"
+								"trips",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unir Pasajero a un Viaje",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_trip\":10,\r\n    \"passenger_id\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/trip/join",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"trip",
+								"join"
 							]
 						}
 					},
@@ -268,15 +269,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"passenger_id\": 1 }"
+							"raw": "{\r\n    \"passenger_id\": 2\r\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/passager/trips/:trip_id/cancel",
+							"raw": "{{base_url}}/passenger/trips/:trip_id/cancel",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"passager",
+								"passenger",
 								"trips",
 								":trip_id",
 								"cancel"
@@ -284,7 +285,7 @@
 							"variable": [
 								{
 									"key": "trip_id",
-									"value": "1"
+									"value": "9"
 								}
 							]
 						}
@@ -306,12 +307,12 @@
 							"raw": "{ \"driver_id\": 1 }"
 						},
 						"url": {
-							"raw": "{{base_url}}/driver/trips/:trip_id/cancel",
+							"raw": "{{base_url}}/drivers/trips/:trip_id/cancel",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"driver",
+								"drivers",
 								"trips",
 								":trip_id",
 								"cancel"
@@ -319,7 +320,7 @@
 							"variable": [
 								{
 									"key": "trip_id",
-									"value": "1"
+									"value": "9"
 								}
 							]
 						}
@@ -332,12 +333,12 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/driver/trips/:trip_id/requests/:request_id/reject",
+							"raw": "{{base_url}}/drivers/trips/:trip_id/requests/:request_id/reject",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"driver",
+								"drivers",
 								"trips",
 								":trip_id",
 								"requests",
@@ -347,11 +348,11 @@
 							"variable": [
 								{
 									"key": "trip_id",
-									"value": "1"
+									"value": "9"
 								},
 								{
 									"key": "request_id",
-									"value": "1"
+									"value": "7"
 								}
 							]
 						}
@@ -364,12 +365,12 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/driver/trips/:trip_id/requests/:request_id/accept",
+							"raw": "{{base_url}}/drivers/trips/:trip_id/requests/:request_id/accept",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"driver",
+								"drivers",
 								"trips",
 								":trip_id",
 								"requests",
@@ -379,11 +380,11 @@
 							"variable": [
 								{
 									"key": "trip_id",
-									"value": "1"
+									"value": "10"
 								},
 								{
 									"key": "request_id",
-									"value": "1"
+									"value": "8"
 								}
 							]
 						}
@@ -396,12 +397,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/driver/trips/:trip_id/requests",
+							"raw": "{{base_url}}/drivers/trips/:trip_id/requests",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"driver",
+								"drivers",
 								"trips",
 								":trip_id",
 								"requests"
@@ -409,7 +410,7 @@
 							"variable": [
 								{
 									"key": "trip_id",
-									"value": "1"
+									"value": "10"
 								}
 							]
 						}

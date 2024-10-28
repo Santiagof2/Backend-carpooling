@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify, request
+from flask import request, Blueprint, jsonify
 from server.db import db
-from server.models import Driver, Vehicle, Vehicle_Driver
+from server.models import Driver, Vehicle, Vehicle_Driver, PassengerTrip, Trip
 from server.utils.functions import get_driver
 
 driver_bp = Blueprint('driver_bp', __name__, url_prefix='/drivers')
@@ -52,33 +52,42 @@ def create_driver():
 
 @driver_bp.route('/trips/<int:trip_id>/requests', methods=['GET'])
 def list_passenger_requests(trip_id):
-    filtered_requests = [r.to_dict() for r in db.trip_requests if r._trip._id == trip_id and r._status == 'pending']
+    # Filtrar las solicitudes de pasajeros pendientes para el viaje especificado
+    passenger_requests = PassengerTrip.query.filter_by(trip_id=trip_id).all()
+    filtered_requests = [r.to_dict() for r in passenger_requests]
     return jsonify(filtered_requests), 200
 
 @driver_bp.route('/trips/<int:trip_id>/requests/<int:request_id>/accept', methods=['POST'])
 def accept_passenger(trip_id, request_id):
-    for request in db.trip_requests:
-        if request._id == request_id and request._trip._id == trip_id:
-            request.accept()
-            return jsonify({'message': 'Passenger accepted successfully'}), 200
+    # Buscar la solicitud de pasajero específica
+    passenger_request = PassengerTrip.query.filter_by(id=request_id, trip_id=trip_id).first()
+    if passenger_request:
+        passenger_request.accept()
+        db.session.commit()
+        return jsonify({'message': 'Passenger accepted successfully'}), 200
     return jsonify({'message': 'Request not found'}), 404
 
 @driver_bp.route('/trips/<int:trip_id>/requests/<int:request_id>/reject', methods=['POST'])
 def reject_passenger(trip_id, request_id):
-    for request in db.trip_requests:
-        if request._id == request_id and request._trip._id == trip_id:
-            request.reject()
-            return jsonify({'message': 'Passenger rejected successfully'}), 200
+    # Buscar la solicitud de pasajero específica
+    passenger_request = PassengerTrip.query.filter_by(id=request_id, trip_id=trip_id).first()
+    if passenger_request:
+        passenger_request.reject()
+        db.session.commit()
+        return jsonify({'message': 'Passenger rejected successfully'}), 200
     return jsonify({'message': 'Request not found'}), 404
 
 @driver_bp.route('/trips/<int:trip_id>/cancel', methods=['POST'])
 def cancel_trip(trip_id):
     driver_id = request.json.get('driver_id')
-    for trip in db.trips:
-        if trip._id == trip_id and trip._vehicle_driver._id == driver_id:
-            trip.cancel_trip()
-            for request in db.trip_requests:
-                if request._trip._id == trip_id:
-                    request.cancel()
-            return jsonify({'message': f'Driver ({driver_id}) cancelled the Trip successfully'}), 200
+    # Buscar el viaje específico
+    trip = Trip.query.filter_by(id=trip_id, vehicle_driver_id=driver_id).first()
+    if trip:
+        trip.cancel_trip()
+        # Cancelar todas las solicitudes de pasajeros asociadas al viaje
+        passenger_requests = PassengerTrip.query.filter_by(trip_id=trip_id).all()
+        for request_i in passenger_requests:
+            request_i.reject()
+        db.session.commit()
+        return jsonify({'message': f'Driver ({driver_id}) cancelled the Trip successfully'}), 200
     return jsonify({'message': 'Trip not found or unauthorized'}), 404

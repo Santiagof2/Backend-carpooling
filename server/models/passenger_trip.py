@@ -17,14 +17,16 @@ class PassengerTrip(db.Model):
 
     def reject(self):
         self.status = "rejected"
+        self.trip.available_seats += 1
 
     def cancel(self):
         self.status = "cancelled"
+        self.trip.available_seats += 1
 
     def to_dict(self):
         return {
             'id': self.id,
             'passenger': self.passenger.to_dict(),
-            # 'trip': self.trip.to_dict(),
+            'trip': self.trip.id,
             'status': self.status
         }

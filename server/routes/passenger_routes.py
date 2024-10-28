@@ -15,7 +15,7 @@ def cancel_trip(trip_id):
     if trip is None:
         return jsonify({'error': 'Trip not found'}), 404
 
-    passenger_trip = PassengerTrip.query.filter_by(trip_id=trip_id, passenger_id=passenger_id, status='accepted').first()
+    passenger_trip = PassengerTrip.query.filter_by(trip_id=trip_id, passenger_id=passenger_id, status='accepted').first() #TODO: debe estar aceptado para cancelar?
     if passenger_trip is None:
         return jsonify({'error': 'Passenger not found or not accepted'}), 404
 

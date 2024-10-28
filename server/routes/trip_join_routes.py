@@ -19,12 +19,12 @@ def join_PassengerTrip():
     passenger = get_passenger(data.get('passenger_id'))
     if passenger is None:
         return jsonify({'error': 'Pasajero no encontrado'}), 404
-
-    new_passenger_trip = PassengerTrip(id=len(PassengerTrip.query.all()) + 1, trip_id=data['id_trip'], passenger=passenger)
+    new_id = len(PassengerTrip.query.all()) + 1
+    new_passenger_trip = PassengerTrip(id=new_id, trip_id=data['id_trip'], passenger=passenger)
     db.session.add(new_passenger_trip)
     db.session.commit()
 
-    return jsonify({'message': 'Pasajero agregado exitosamente'}), 200
+    return jsonify({'message': 'Pasajero agregado exitosamente', 'id': new_id}), 200
 
 def descontar_cupo(id_trip: int):
     trip = Trip.query.filter_by(id=id_trip).first()
