@@ -29,6 +29,7 @@ class Trip(db.Model):
             'departure_address': self.departure_address.to_dict() if self.departure_address else None,
             'arrival_address': self.arrival_address.to_dict() if self.arrival_address else None,
             'vehicle_driver': self.vehicle_driver.to_dict() if self.vehicle_driver else None,
+            'status': self.status
         }
 
     def cancel_trip(self):
