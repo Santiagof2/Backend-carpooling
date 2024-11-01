@@ -1,15 +1,22 @@
-from flask import Flask
 from server.db import init_db  # Configuración de la base de datos
 from server.routes import *
-from flask_socketio import SocketIO, emit, send, join_room, leave_room
+from flask_socketio import SocketIO, send, join_room, leave_room
 from server.models.message import Message
 from server.utils.functions import get_datetime_today
-from server.utils.validations import is_valid_message
+from server.utils.validations import is_valid_message, validate_token
+from flask import Flask, request, jsonify
+import firebase_admin
+from firebase_admin import credentials
+
 
 app = Flask(__name__)
 
 # Inicializar la base de datos
 init_db(app)
+# Inicializa la aplicación de Firebase
+cred = credentials.Certificate("./serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
+
 
 # Registrar el Blueprint de usuarios
 app.register_blueprint(user_bp)
@@ -25,6 +32,20 @@ app.register_blueprint(passenger_bp)
 app.register_blueprint(vehicle_driver_bp)
 app.register_blueprint(passenger_trip_bp)
 app.register_blueprint(trip_filter_bp)
+
+# Ruta protegida que requiere un token válido
+@app.route('/protected', methods=['POST'])
+def protected():
+    token = request.headers.get('Authorization')  # Se espera un header 'Authorization: Bearer <idToken>'
+    user = validate_token(token)
+    if not user:
+        return jsonify({"error": "Invalid token"}), 401
+    print(user['uid'])
+    print(user['email'])
+    print(user['email_verified'])
+    
+    return jsonify({"nice": "validado pa"}), 200
+
 
 
 # --------------------------------- SOCKETIO ---------------------------------
