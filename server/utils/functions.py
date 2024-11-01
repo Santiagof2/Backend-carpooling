@@ -2,8 +2,17 @@
 from datetime import datetime
 from server.models import User, Driver
 from flask import jsonify
+from dotenv import load_dotenv
+import os
 
-# Funciones varias que se repiten en el proyecto
+
+# ------------------------- Funciones varias que se repiten en el proyecto -------------------------
+
+def get_google_client_id():
+    load_dotenv()
+    CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+    return CLIENT_ID
+
 def get_datetime_today():
     now_utc = datetime.utcnow()
     now_string = now_utc.strftime('%Y-%m-%d %H:%M:%S')
