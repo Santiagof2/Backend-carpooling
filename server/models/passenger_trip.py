@@ -5,7 +5,7 @@ class PassengerTrip(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     trip_id = db.Column(db.Integer, db.ForeignKey('Trip.id'), nullable=False)
-    passenger_id = db.Column(db.Integer, db.ForeignKey('Passenger.user_id'), nullable=False)
+    passenger_id = db.Column(db.String(28), db.ForeignKey('Passenger.user_id'), nullable=False)
     status = db.Column(db.String(50), nullable=False, default="pending")
 
     passenger = db.relationship('Passenger', backref='passenger_trip')

@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "fbfadf3d-e6b1-4109-b51f-04c491f225a1",
+		"_postman_id": "f905e38e-5452-4186-93d4-5d8896103594",
 		"name": "Carpooling DS",
 		"description": "Colección para consumir la API de Carpooling DS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "26225413"
+		"_exporter_id": "34932983"
 	},
 	"item": [
 		{
@@ -232,32 +232,6 @@
 					"response": []
 				},
 				{
-					"name": "Crear un viaje",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"departure_date\": \"2024-10-10\",\r\n    \"departure_time\": \"20:10:10\",\r\n    \"available_seats\": 4,\r\n    \"seat_price\": 134,\r\n    \"departure_address_id\": \"1\",\r\n    \"arrival_address_id\": \"1\",\r\n    \"vehicle_driver_id\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/trips",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"trips"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Cancelar Viaje (Pasajero)",
 					"request": {
 						"method": "POST",
@@ -449,6 +423,32 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Crear un viaje",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"departure_date\": \"2024-11-02\",\r\n    \"departure_time\": \"11:30:15\",\r\n    \"available_seats\": 4,\r\n    \"seat_price\": 134,\r\n    \"arrival_address\": {\r\n        \"street\": \"Calle inicio\",\r\n        \"number\": 150,\r\n        \"latitude\": 36.52,\r\n        \"longitude\": 36.53,\r\n        \"locality_id\": 1\r\n    },\r\n    \"departure_address\": {\r\n        \"street\": \"Calle destino\",\r\n        \"number\": 150,\r\n        \"latitude\": 36.50,\r\n        \"longitude\": 36.52,\r\n        \"locality_id\": 1\r\n    },\r\n    \"vehicle_driver_id\": \"qqISuMpv1dXSJi5UxNR0h6DDMH52\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/trips",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"trips"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -477,6 +477,42 @@
 							"path": [
 								"auth",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear nuevo usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSuzI1NiIsImtpZCI6ImM4OGQ4MDlmNGRiOTQzZGY1M2RhN2FjY2ZkNDc3NjRkMDViYTM5MWYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMDY0NDcwMDE5NTczLXJydWsyMXV1NWdrbGQxNjNzZnE0NXY4M3JqczVlbWc2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTA2NDQ3MDAxOTU3My1wM241ZWc1NWFqaXFqNm5xaThmZmkyNHVhcjg1cHBtdi5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExMzgyMjc0ODc1NDI1ODM1MDMyNSIsImVtYWlsIjoiZmVkZS52YWxsZTA0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiRmVkZXJpY28gVmFsbGUiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jTGRnWjZOaG5aWGRiRHY5My03aVg5NzNZX0pTZml2S2xkSHZTdkNCSS13bTBuZ2dCbWo9czk2LWMiLCJnaXZlbl9uYW1lIjoiRmVkZXJpY28iLCJmYW1pbHlfbmFtZSI6IlZhbGxlIiwiaWF0IjoxNzMwNDI4ODk1LCJleHAiOjE3MzA0MzI0OTV9.SJ-ynzll_kmqUGMOuBn2Q0y_8hNsD5A2h9zBOEc3I83U50hLvy225lyOZMrqX1EN7hP1UdcGlVnWeHI84u8wkQtn2FX-_fD6jsjozR01Rof9jdNi9M953-QpLkD7OGaKAoBVQrEIYr4oQtoel4MYWoVOLL7Ijvf_eBr9StP7uKhwhh5_ts1YHS36H_EAY8KmGMirPuT2lXzMQ-i9TOLBhbDIpmQcQqCRNd_8aCkPztFiBOuN69AKBTK86XaH4VFS8qwJh3k1Yo9WSpvE5GU-2guBeysrGntT03KoyhYwvGaT1fBxRfunM67UEE6-XL2hG-4OBi10co86b9z6eQeM3A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"elba\",\n    \"last_name\": \"lazo\",\n    \"username\": \"elbalazo\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth"
 							]
 						}
 					},
@@ -710,7 +746,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_id\": 7\r\n}",
+							"raw": "{\r\n    \"user_id\": \"qqISuMpv1dXSJi5UxNR0h6DDMH52\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -761,6 +797,42 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Protected route",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImM4OGQ4MDlmNGRiOTQzZGY1M2RhN2FjY2ZkNDc3NjRkMDViYTM5MWYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMDY0NDcwMDE5NTczLXJydWsyMXV1NWdrbGQxNjNzZnE0NXY4M3JqczVlbWc2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTA2NDQ3MDAxOTU3My1wM241ZWc1NWFqaXFqNm5xaThmZmkyNHVhcjg1cHBtdi5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExMzgyMjc0ODc1NDI1ODM1MDMyNSIsImVtYWlsIjoiZmVkZS52YWxsZTA0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiRmVkZXJpY28gVmFsbGUiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jTGRnWjZOaG5aWGRiRHY5My03aVg5NzNZX0pTZml2S2xkSHZTdkNCSS13bTBuZ2dCbWo9czk2LWMiLCJnaXZlbl9uYW1lIjoiRmVkZXJpY28iLCJmYW1pbHlfbmFtZSI6IlZhbGxlIiwiaWF0IjoxNzMwMzA4OTk5LCJleHAiOjE3MzAzMTI1OTl9.hoVsZMwVkQuVvPsyyNSr-w1Yh4jw-DScxDjUR2oFseAkYr4qMcx-6XakbVVqUXFxoEw0XH5g_JqGS8jtmWEQDl4jhd-sEMHKbC2C7XgrQV9cjmetna32ZkzPhopzFPioWorH-CMQzr_pSlvhdmNgMJ0_04om3QuzhcYZVaivyiB8lG1dgkdtHuLD_PJ1BaJZPFgonz3bXStt-7eXPAPVvDmjNK4PKPIeQhiAg1ctp_nawGHWa19Cz-Io03izDKDjlGlewwLSWjvfzkqJ2R-R71MI4XVR_-UpUYY8qxd1l-tf4znW7p8yzKxBN_5cRiuV60wFI2XnLGWfN4GDhXQTkg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/protected",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"protected"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"variable": [
