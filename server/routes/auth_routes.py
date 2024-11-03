@@ -42,13 +42,11 @@ def create_user():
 # Iniciar sesión
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-
-    if not (data.get('username') and data.get('password')): return jsonify({'error': 'Usuario o contraseña incorrectos.'}), 400
-
-    user = User.query.filter_by(username=data.get('username')).first()
-    if not user: return jsonify({'error': 'Usuario no encontrado.'}), 400
-
-    if data['password'] != user.password: return jsonify({'error': 'Usuario o contraseña incorrectos.'}), 400
-
+    token = request.headers.get('Authorization')  # Se espera un header 'Authorization: Bearer <idToken>'
+    userToken = validate_token(token)
+    if not userToken:
+        return jsonify({"error": "Invalid token"}), 401
+    user = User.query.filter_by(id=userToken.get('id')).first()
+    if not user: return jsonify({'error': 'Usuario no encontrado.'}), 404
+    if (not userToken['email_verified']): return jsonify({'error': 'Email no verificado.'}), 403
     return jsonify(user.to_dict()), 200

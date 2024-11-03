@@ -19,7 +19,7 @@ def get_driver_route(id):
     return jsonify(driver.to_dict())
 
 # Obtener vehiculos de un conductor
-@driver_bp.route('/<int:id>/vehicles', methods=['GET'])
+@driver_bp.route('/<string:id>/vehicles', methods=['GET'])
 def get_driver_vehicles(id):
     # Verificar si el conductor existe
     driver = get_driver(id)
@@ -37,7 +37,7 @@ def get_driver_vehicles(id):
     for entry in vehicle_driver_entries:
         vehicle = Vehicle.query.get(entry.vehicle_id)
         if vehicle:
-            vehicles.append(vehicle.to_dict())  # Asumimos que el modelo Vehicle tiene un método to_dict()
+            vehicles.append(vehicle.to_dict())
 
     return jsonify({'driver_id': id, 'vehicles': vehicles}), 200
 

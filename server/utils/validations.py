@@ -20,6 +20,7 @@ def validate_token_firebase(token):
         decoded_token = auth.verify_id_token(token)
         return decoded_token
     except Exception as e:
+        print(e)
         return False
 
 def validate_token_google(token):
