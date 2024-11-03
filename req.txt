@@ -28,3 +28,4 @@ Werkzeug==3.0.4
 wsproto==1.2.0
 google-auth
 python-dotenv
+firebase_admin
