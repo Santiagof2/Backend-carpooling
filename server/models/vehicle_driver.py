@@ -3,6 +3,7 @@ from server.db import db
 class Vehicle_Driver(db.Model):
     __tablename__ = 'Vehicle_Driver'
 
+    id = db.Column(db.Integer, primary_key=True)
     driver_id = db.Column(db.String(28), db.ForeignKey('Driver.user_id'), primary_key=True)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('Vehicle.id'), primary_key=True)
     
