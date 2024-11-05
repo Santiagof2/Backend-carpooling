@@ -3,6 +3,7 @@ from pprint import pprint
 from flask import Blueprint, jsonify, request
 from server.models import Trip, Address, Locality, Principal_Subdivision
 from server.db import db
+from server.models.vehicle_driver import Vehicle_Driver
 
 trip_bp = Blueprint('trip_bp', __name__, url_prefix='/trips')
 
@@ -34,7 +35,7 @@ def create_trip():
     data = request.get_json()
 
     # Validar los datos necesarios
-    if not data or not all(key in data for key in ['departure_date', 'departure_time', 'available_seats', 'seat_price', 'vehicle_driver_id', 'departure_address', 'arrival_address']):
+    if not data or not all(key in data for key in ['departure_date', 'departure_time', 'available_seats', 'seat_price', 'driver_id', 'vehicle_id', 'departure_address', 'arrival_address']):
         return jsonify({'message': 'Missing required fields'}), 400
     
     if not all(key in data['departure_address'] for key in ['street', 'number', 'latitude', 'longitude', 'locality_id']):
@@ -43,7 +44,13 @@ def create_trip():
     if not all(key in data['arrival_address'] for key in ['street', 'number', 'latitude', 'longitude', 'locality_id']):
         return jsonify({'message': 'Missing required fields in arrival address'}), 400
     
-
+    vehicle_driver = Vehicle_Driver.query.filter_by(
+            vehicle_id=data['vehicle_id'],
+            driver_id=data['driver_id']
+    ).first()
+    if not vehicle_driver:
+        return jsonify({'message': 'El conductor no tiene registrado ese vehículo'}), 400
+   
     new_departure_address = Address(
         street=data['departure_address']['street'],
         number=data['departure_address']['number'],
@@ -59,7 +66,7 @@ def create_trip():
         longitude=data['arrival_address']['longitude'],
         locality_id=data['arrival_address']['locality_id']
     )
-
+    
     try:
 
         # Obtener la fecha y hora actual
@@ -73,7 +80,7 @@ def create_trip():
         # Agregar las nuevas direcciones a la base de datos
         db.session.add(new_departure_address)
         db.session.add(new_arrival_address)
-        db.session.commit()
+        db.session.flush() # para que este diponible new_arrival_address.id
 
         # Obtener las direcciones de salida y llegada 
         new_departure_address_id = Address.query.get(new_departure_address.id).id
@@ -88,7 +95,7 @@ def create_trip():
             creation_timestamp=now_string,
             departure_address_id=new_departure_address_id,
             arrival_address_id=new_arrival_address_id,
-            vehicle_driver_id=data['vehicle_driver_id']
+            vehicle_driver_id=vehicle_driver.id
         )
 
         # Agregar el nuevo viaje a la base de datos
