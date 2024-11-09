@@ -1,15 +1,31 @@
 from server.db import db  # Importar el objeto db desde db.py
 
+class Country(db.Model):
+    __tablename__ = 'Country'
+
+    id = db.Column(db.Integer, primary_key=True)
+    country  = db.Column(db.String(45), nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'country': self.country,
+        }
+
 class Principal_Subdivision(db.Model):
     __tablename__ = 'Principal_Subdivision'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(45), nullable=False)
+    country_id = db.Column(db.Integer, db.ForeignKey('Country.id'), nullable=False)
 
+    country = db.relationship('Country', backref='Principal_Subdivision')
+    
     def to_dict(self):
         return {
             'id': self.id,
-            'name': self.name
+            'name': self.name,
+            'country': self.country.to_dict()
         }
 
 class Locality(db.Model):
