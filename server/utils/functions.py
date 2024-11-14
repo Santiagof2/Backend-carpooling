@@ -5,11 +5,14 @@ from flask import jsonify
 from dotenv import load_dotenv
 import os
 
+load_dotenv()
 
 # ------------------------- Funciones varias que se repiten en el proyecto -------------------------
+def get_mp_public_key():
+    MP_PUBLIC_KEY = os.getenv('MP_PUBLIC_KEY')
+    return MP_PUBLIC_KEY
 
 def get_google_client_id():
-    load_dotenv()
     CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
     return CLIENT_ID
 
