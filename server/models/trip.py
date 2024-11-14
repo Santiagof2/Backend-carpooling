@@ -35,3 +35,7 @@ class Trip(db.Model):
     def cancel_trip(self):
         self.status = 'cancelled'
         db.session.commit()
+    
+    def complete_trip(self):
+        self.status = 'completed'
+        db.session.commit()

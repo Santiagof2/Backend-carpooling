@@ -12,3 +12,4 @@ class Driver(db.Model):
             'user_id': self.user_id,
             'user': self.user.to_dict(),
         }
+    

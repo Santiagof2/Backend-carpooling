@@ -87,6 +87,12 @@ def reject_passenger(trip_id, passenger_id):
 @driver_bp.route('/trips/<int:trip_id>/cancel', methods=['POST'])
 def cancel_trip(trip_id):
     driver_id = request.json.get('driver_id')
+
+    # Verificar si el conductor existe
+    driver = Driver.query.filter_by(user_id=driver_id).first()
+    if not driver:
+        return jsonify({'message': 'Driver not found'}), 404
+    
     # Buscar el viaje específico
     trip = Trip.query.filter_by(id=trip_id).first()
     if trip:
@@ -98,3 +104,21 @@ def cancel_trip(trip_id):
         db.session.commit()
         return jsonify({'message': f'Driver ({driver_id}) cancelled the Trip successfully'}), 200
     return jsonify({'message': 'Trip not found or unauthorized'}), 404
+
+@driver_bp.route('/trips/<int:trip_id>/complete', methods=['POST'])
+def complete_trip(trip_id):
+    driver_id = request.json.get('driver_id')
+
+    # Verificar si el conductor existe
+    driver = Driver.query.filter_by(user_id=driver_id).first()
+    if not driver:
+        return jsonify({'message': 'Driver not found'}), 404
+    
+    # Buscar el viaje específico
+    trip = Trip.query.filter_by(id=trip_id).first()
+    if trip:
+        trip.complete_trip()
+        db.session.commit()
+        return jsonify({'message': f'Driver ({driver_id}) completed the Trip successfully'}), 200
+    return jsonify({'message': 'Trip not found or unauthorized'}), 404
+
