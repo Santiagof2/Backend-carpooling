@@ -81,7 +81,7 @@ def reject_passenger(trip_id, request_id):
 def cancel_trip(trip_id):
     driver_id = request.json.get('driver_id')
     # Buscar el viaje específico
-    trip = Trip.query.filter_by(id=trip_id, vehicle_driver_id=driver_id).first()
+    trip = Trip.query.filter_by(id=trip_id).first()
     if trip:
         trip.cancel_trip()
         # Cancelar todas las solicitudes de pasajeros asociadas al viaje
