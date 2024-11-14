@@ -12,7 +12,7 @@ class PassengerTrip(db.Model):
     trip = db.relationship('Trip', backref='passenger_trip')
 
     def accept(self):
-        self.accepted = "accepted"
+        self.status = "accepted"
         self.trip.available_seats -= 1
 
     def reject(self):

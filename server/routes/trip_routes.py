@@ -45,7 +45,7 @@ def get_trips_by_user(id_user):
     return jsonify(result)
 
 # Obtener un viaje por ID
-@trip_bp.route('/<int:id>', methods=['GET'])
+@trip_bp.route('/<string:id>', methods=['GET'])
 def get_trip(id):
     trip = Trip.query.get(id)
     if trip is None:
@@ -53,7 +53,7 @@ def get_trip(id):
     return jsonify(trip.to_dict())
 
 # Obtener conductor de un viaje
-@trip_bp.route('/<int:id>/driver', methods=['GET'])
+@trip_bp.route('/<string:id>/driver', methods=['GET'])
 def get_trip_driver(id):
     trip = Trip.query.get(id)
     result = trip.vehicle_driver.driver.to_dict()

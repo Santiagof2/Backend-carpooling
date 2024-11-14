@@ -1,6 +1,7 @@
 from flask import request, Blueprint, jsonify
 from server.db import db
 from server.models import Driver, Vehicle, Vehicle_Driver, PassengerTrip, Trip
+from server.routes.user_routes import send_notification
 from server.utils.functions import get_driver
 
 driver_bp = Blueprint('driver_bp', __name__, url_prefix='/drivers')
@@ -57,23 +58,29 @@ def list_passenger_requests(trip_id):
     filtered_requests = [r.to_dict() for r in passenger_requests]
     return jsonify(filtered_requests), 200
 
-@driver_bp.route('/trips/<int:trip_id>/requests/<int:request_id>/accept', methods=['POST'])
-def accept_passenger(trip_id, request_id):
+@driver_bp.route('/trips/<int:trip_id>/requests/<string:passenger_id>/accept', methods=['POST'])
+def accept_passenger(trip_id, passenger_id):
     # Buscar la solicitud de pasajero específica
-    passenger_request = PassengerTrip.query.filter_by(id=request_id, trip_id=trip_id).first()
+    passenger_request = PassengerTrip.query.filter_by(passenger_id=passenger_id, trip_id=trip_id).first()
     if passenger_request:
         passenger_request.accept()
         db.session.commit()
+        expo_token = passenger_request.passenger.user.expo_push_token
+        if expo_token: 
+            send_notification(expo_push_token=expo_token, title='Felicidades!', body="Su solicitud de viaje fué aceptada 🥳🥳🥳")
         return jsonify({'message': 'Passenger accepted successfully'}), 200
     return jsonify({'message': 'Request not found'}), 404
 
-@driver_bp.route('/trips/<int:trip_id>/requests/<int:request_id>/reject', methods=['POST'])
-def reject_passenger(trip_id, request_id):
+@driver_bp.route('/trips/<int:trip_id>/requests/<string:passenger_id>/reject', methods=['POST'])
+def reject_passenger(trip_id, passenger_id):
     # Buscar la solicitud de pasajero específica
-    passenger_request = PassengerTrip.query.filter_by(id=request_id, trip_id=trip_id).first()
+    passenger_request = PassengerTrip.query.filter_by(passenger_id=passenger_id, trip_id=trip_id).first()
     if passenger_request:
         passenger_request.reject()
         db.session.commit()
+        expo_token = passenger_request.passenger.user.expo_push_token
+        if expo_token: 
+            send_notification(expo_push_token=expo_token, title='Lo sentimos...', body="Su solicitud de viaje ha sido rechazada 😞. pero puedes seguir buscando otros viajes!")
         return jsonify({'message': 'Passenger rejected successfully'}), 200
     return jsonify({'message': 'Request not found'}), 404
 

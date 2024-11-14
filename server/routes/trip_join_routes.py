@@ -4,7 +4,7 @@ from server.models.passenger_trip import PassengerTrip
 from server.models.passenger import Passenger
 from server.models.trip import Trip
 
-trip_join_bp = Blueprint('trip_db', __name__, url_prefix='/trip/join')
+trip_join_bp = Blueprint('trip_db', __name__, url_prefix='/trip_join')
 
 @trip_join_bp.route('/', methods=['POST'])
 def join_PassengerTrip():
