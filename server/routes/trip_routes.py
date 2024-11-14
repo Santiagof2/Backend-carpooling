@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, request
 from server.models import Trip, Address, Locality, Principal_Subdivision
 from server.db import db
 from server.models.address import Country
+from server.models.passenger_trip import PassengerTrip
 from server.models.vehicle_driver import Vehicle_Driver
 
 trip_bp = Blueprint('trip_bp', __name__, url_prefix='/trips')
@@ -13,6 +14,34 @@ trip_bp = Blueprint('trip_bp', __name__, url_prefix='/trips')
 def get_trips():
     trips = Trip.query.all()
     result = [trip.to_dict() for trip in trips]
+    return jsonify(result)
+
+# Obtener viajes de usuario
+@trip_bp.route('/<int:id_user>/user', methods=['GET'])
+def get_trips_by_user(id_user):
+
+    trips_driver = (
+        db.session.query(Trip)
+        .join(Vehicle_Driver, Trip.vehicle_driver_id == Vehicle_Driver.id)
+        .filter(Vehicle_Driver.driver_id == id_user)
+        .all()
+    )
+
+    trips_passenger = (
+        db.session.query(Trip)
+        .join(PassengerTrip, Trip.id == PassengerTrip.trip_id)
+        .filter(PassengerTrip.passenger_id == id_user)
+        .all()
+    )
+
+    if trips_driver is None and trips_passenger is None:
+        return jsonify({'message': f'El usuario ({id_user}) no tiene historial de viajes como conductor o como pasajero'}), 404
+    trips_passenger_to_dict = [trip.to_dict() for trip in trips_passenger]
+    trips_driver_to_dict = [trip.to_dict() for trip in trips_driver]
+    result = {
+        'trips_as_driver': trips_driver_to_dict,
+        'trips_as_passenger': trips_passenger_to_dict,
+    }
     return jsonify(result)
 
 # Obtener un viaje por ID
