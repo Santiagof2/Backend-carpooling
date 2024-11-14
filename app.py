@@ -32,6 +32,7 @@ app.register_blueprint(passenger_bp)
 app.register_blueprint(vehicle_driver_bp)
 app.register_blueprint(passenger_trip_bp)
 app.register_blueprint(trip_filter_bp)
+app.register_blueprint(ratings_bp)
 
 # Ruta protegida que requiere un token válido
 @app.route('/protected', methods=['POST'])
