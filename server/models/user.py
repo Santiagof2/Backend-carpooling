@@ -9,6 +9,7 @@ class User(db.Model):
     email = db.Column(db.String(45), unique=True, nullable=False)
     username = db.Column(db.String(45), unique=True, nullable=False)
     creation_date = db.Column(db.String(45), nullable=False)
+    expo_push_token = db.Column(db.String(42), nullable=True)
 
     def to_dict(self):
         return {
@@ -18,4 +19,5 @@ class User(db.Model):
             'email': self.email,
             'username': self.username,
             'creation_date': self.creation_date,
+            'expo_push_token': self.expo_push_token
         }

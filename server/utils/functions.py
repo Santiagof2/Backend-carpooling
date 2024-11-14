@@ -4,13 +4,17 @@ from server.models import User, Driver
 from flask import jsonify
 from dotenv import load_dotenv
 import os
+load_dotenv()
 
 
 # ------------------------- Funciones varias que se repiten en el proyecto -------------------------
 
 def get_google_client_id():
-    load_dotenv()
     CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+    return CLIENT_ID
+
+def get_expo_access_token():
+    CLIENT_ID = os.getenv('EXPO_PUBLIC_ACCESS_TOKEN')
     return CLIENT_ID
 
 def get_datetime_today():
