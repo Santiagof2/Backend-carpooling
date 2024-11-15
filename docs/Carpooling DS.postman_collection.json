@@ -248,6 +248,24 @@
 					"response": []
 				},
 				{
+					"name": "Obtener todos los viajes (less)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/trips/less",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"trips",
+								"less"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Obtener viajes de un usuario",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true

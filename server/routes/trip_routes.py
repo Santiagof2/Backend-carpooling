@@ -16,6 +16,14 @@ def get_trips():
     result = [trip.to_dict() for trip in trips]
     return jsonify(result)
 
+# Obtener todos los viajes less
+@trip_bp.route('/less', methods=['GET'])
+def get_trips_less():
+    trips = Trip.query.all()
+    result = [trip.to_dict_less() for trip in trips]
+    return jsonify(result)
+
+
 # Obtener viajes de usuario
 @trip_bp.route('/<string:id_user>/user', methods=['GET'])
 def get_trips_by_user(id_user):

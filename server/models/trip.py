@@ -32,6 +32,21 @@ class Trip(db.Model):
             'status': self.status
         }
 
+    def to_dict_less(self):
+        return {
+            'id': self.id,
+            'departure_date': self.departure_date.strftime('%Y-%m-%d'),
+            'departure_time': self.departure_time.strftime('%H:%M:%S'),
+            'available_seats': self.available_seats,
+            'seat_price': self.seat_price,
+            'creation_timestamp': self.creation_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'departure_address': self.departure_address_id,
+            'arrival_address': self.arrival_address_id,
+            'vehicle_driver': self.vehicle_driver_id,
+            'status': self.status
+        }
+
+
     def cancel_trip(self):
         self.status = 'cancelled'
         db.session.commit()
