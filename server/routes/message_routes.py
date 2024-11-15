@@ -1,7 +1,10 @@
 from flask import Blueprint, jsonify, request
 from server.db import db
 from server.models import Message
+from server.models.passenger_trip import PassengerTrip
+from server.models.trip import Trip
 from server.models.user import User
+from server.routes.user_routes import send_notification
 from server.utils.functions import get_datetime_today
 
 message_bp = Blueprint('message_bp', __name__, url_prefix='/messages')
@@ -58,8 +61,21 @@ def create_message():
     try:
         db.session.add(new_message)
         db.session.commit()
+
+        # Realizando la consulta con un `select_from()` explícito
+        users_to_notify = (
+            db.session.query(User)
+            .join(PassengerTrip, PassengerTrip.passenger_id == User.id)  # Join entre User y PassengerTrip
+            .join(Message, Message.trip_id == PassengerTrip.trip_id)  # Join entre Message y PassengerTrip
+            .filter(User.expo_push_token.isnot(None))  # Filtrar por usuarios con expo_push_token
+            .all()
+        )
+        for user in users_to_notify:
+            send_notification(expo_push_token=user.expo_push_token, title='Han enviado un mensaje!', body=data['message'])
         return jsonify(new_message.to_dict()), 201  # Retorna el mensaje creado y un código 201 de creación exitosa
+
     except Exception as e:
+        print(e)
         db.session.rollback()  # Hacer rollback si hay un error
         return jsonify({'message': 'Error creating message', 'error': str(e)}), 500
 
