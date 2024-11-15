@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "f905e38e-5452-4186-93d4-5d8896103594",
+		"_postman_id": "9a4c7e2c-e5ff-40da-9669-5c4e4f3f99ad",
 		"name": "Carpooling DS",
 		"description": "Colección para consumir la API de Carpooling DS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "34932983"
+		"_exporter_id": "26225413"
 	},
 	"item": [
 		{
@@ -571,6 +571,32 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Completar viaje (Conductor)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/drivers/trips/:trip_id/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers",
+								"trips",
+								":trip_id",
+								"complete"
+							],
+							"variable": [
+								{
+									"key": "trip_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -837,6 +863,31 @@
 					"response": []
 				},
 				{
+					"name": "Puntuar Conductor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/drivers/rate/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"drivers",
+								"rate",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Obtener vehiculos de un conductor",
 					"request": {
 						"method": "GET",
@@ -907,6 +958,36 @@
 							],
 							"path": [
 								"vehicles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pasajeros",
+			"item": [
+				{
+					"name": "Puntuar Pasajero",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/passenger/rate/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"passenger",
+								"rate",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},
