@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from server.db import db
+from server.models.passenger import Passenger
 from server.models.trip import Trip
 from server.models.passenger_trip import PassengerTrip
 
@@ -22,3 +23,27 @@ def cancel_trip(trip_id):
     passenger_trip.cancel()
     db.session.commit()
     return jsonify({'message': f'Passenger ({passenger_id}) cancelled the Trip successfully'}), 200
+
+@passenger_bp.route('/rate/<int:passenger_id>', methods=['POST'])
+def rate_passenger(passenger_id):
+    rating = request.json.get('rating')
+
+    if passenger_id is None or rating is None:
+        return jsonify({'error': 'bad passenger_id or rating'}), 400
+
+    passenger = Passenger.query.filter_by(user_id=passenger_id).first()
+    if passenger is None:
+        return jsonify({'error': 'Passenger not found'}), 404
+    
+    try:
+        passenger.add_rating(rating)
+        return jsonify({'message': f'Passenger ({passenger_id}) rated successfully'}), 200
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    
+@passenger_bp.route('/<int:passenger_id>', methods=['GET'])
+def get_passenger(passenger_id):
+    passenger = Passenger.query.filter_by(user_id=passenger_id).first()
+    if passenger is None:
+        return jsonify({'error': 'Passenger not found'}), 404
+    return jsonify(passenger.to_dict()), 200
