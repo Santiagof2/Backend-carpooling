@@ -17,7 +17,7 @@ def get_trips():
     return jsonify(result)
 
 # Obtener viajes de usuario
-@trip_bp.route('/<int:id_user>/user', methods=['GET'])
+@trip_bp.route('/<string:id_user>/user', methods=['GET'])
 def get_trips_by_user(id_user):
 
     trips_driver = (
