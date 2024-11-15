@@ -16,13 +16,13 @@ def get_users():
     return jsonify(result)
 
 # Obtener un usuario por ID
-@user_bp.route('/<int:id>', methods=['GET'])
+@user_bp.route('/<string:id>', methods=['GET'])
 def get_user_route(id):
     user = get_user(id)
     return jsonify(user.to_dict())
 
 # Actualizar un usuario existente
-@user_bp.route('/<int:id>', methods=['PUT'])
+@user_bp.route('/<string:id>', methods=['PUT'])
 def update_user(id):
 
     # Buscar el usuario en la base de datos por ID

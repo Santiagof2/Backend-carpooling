@@ -45,7 +45,7 @@ def get_trips_by_user(id_user):
     return jsonify(result)
 
 # Obtener un viaje por ID
-@trip_bp.route('/<string:id>', methods=['GET'])
+@trip_bp.route('/<int:id>', methods=['GET'])
 def get_trip(id):
     trip = Trip.query.get(id)
     if trip is None:

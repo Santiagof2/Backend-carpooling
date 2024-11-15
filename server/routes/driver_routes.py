@@ -14,7 +14,7 @@ def get_drivers():
     return jsonify(result)
 
 # Obtener un conductor por ID
-@driver_bp.route('/<int:id>', methods=['GET'])
+@driver_bp.route('/<string:id>', methods=['GET'])
 def get_driver_route(id):
     driver = get_driver(id)
     return jsonify(driver.to_dict())
