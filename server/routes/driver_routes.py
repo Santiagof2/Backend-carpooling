@@ -116,9 +116,26 @@ def complete_trip(trip_id):
     
     # Buscar el viaje específico
     trip = Trip.query.filter_by(id=trip_id).first()
-    if trip:
-        trip.complete_trip()
-        db.session.commit()
-        return jsonify({'message': f'Driver ({driver_id}) completed the Trip successfully'}), 200
-    return jsonify({'message': 'Trip not found or unauthorized'}), 404
 
+    if not trip: return jsonify({'message': 'Trip not found'}), 404
+    
+    trip.complete_trip()
+    db.session.commit()
+    return jsonify({'message': f'Driver ({driver_id}) completed the Trip successfully'}), 200
+
+@driver_bp.route('/rate/<int:driver_id>', methods=['POST'])
+def rate_driver(driver_id):
+    rating = request.json.get('rating')
+
+    if driver_id is None or rating is None:
+        return jsonify({'error': 'bad driver_id or rating'}), 400
+
+    driver = Driver.query.filter_by(user_id=driver_id).first()
+    if driver is None:
+        return jsonify({'error': 'Driver not found'}), 404
+    
+    try:
+        driver.add_rating(rating)
+        return jsonify({'message': f'Driver ({driver_id}) rated successfully'}), 200
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
