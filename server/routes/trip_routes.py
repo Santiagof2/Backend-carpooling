@@ -4,16 +4,26 @@ from flask import Blueprint, jsonify, request
 from server.models import Trip, Address, Locality, Principal_Subdivision
 from server.db import db
 from server.models.address import Country
+from server.models.driver import Driver
 from server.models.passenger_trip import PassengerTrip
 from server.models.vehicle_driver import Vehicle_Driver
+import time
+from sqlalchemy.orm import joinedload
 
 trip_bp = Blueprint('trip_bp', __name__, url_prefix='/trips')
 
 # Obtener todos los viajes
 @trip_bp.route('/', methods=['GET'])
 def get_trips():
-    trips = Trip.query.all()
-    result = [trip.to_dict() for trip in trips]
+    # start_time = time.time()
+    trips = Trip.query.options(
+        joinedload(Trip.departure_address).joinedload(Address.locality).joinedload(Locality.principal_subdivision).joinedload(Principal_Subdivision.country),
+        joinedload(Trip.arrival_address).joinedload(Address.locality).joinedload(Locality.principal_subdivision).joinedload(Principal_Subdivision.country),
+        joinedload(Trip.vehicle_driver).joinedload(Vehicle_Driver.driver).joinedload(Driver.user)
+    ).all()
+    result = [trip.to_dict_joined() for trip in trips]
+    #db_query_time = time.time() - start_time
+    #print(f"Tiempo de consulta a la base de datos: {db_query_time:.4f} segundos")
     return jsonify(result)
 
 # Obtener todos los viajes less
